@@ -14,35 +14,32 @@
     font-style:normal;
 }
 
-/* บังคับทุกอย่างใช้ฟอนต์นี้ */
 *{
     box-sizing:border-box;
-    font-family:'MyFont', sans-serif !important; /* fallback font */
+    font-family:'MyFont', sans-serif !important;
     margin:0;
     padding:0;
-    -webkit-tap-highlight-color: transparent; /* ลบสีไฮไลท์ตอนกดบนมือถือ */
+    -webkit-tap-highlight-color: transparent;
 }
 
-/* ===== Body ===== */
 body{
     background:url('Green And Blue Gradient Dreamy Cloud Blank Background Instagram Post.png') center/cover;
-    background-color: #a2d2ff; /* สีสำรอง */
-    overflow:hidden; /* ป้องกันการเลื่อนหน้าจอ */
+    background-color: #a2d2ff;
+    overflow:hidden;
     height: 100vh;
     width: 100vw;
 }
 
-/* ===== Section / Animation ===== */
 .section{
     position:absolute;
     inset:0;
     display:flex;
-    flex-direction: column; /* จัดแนวตั้งเป็นหลัก */
+    flex-direction: column;
     justify-content:center;
     align-items:center;
     opacity:0;
     transform:translateX(50px);
-    transition:all .6s ease;
+    transition:opacity .6s ease, transform .6s ease;
     pointer-events:none;
     padding:20px;
     width: 100%;
@@ -60,206 +57,146 @@ body{
     transform:translateX(-50px);
 }
 
-/* ---------- หน้าแรก (กล่องของขวัญ) ---------- */
-#page1{
-    gap: 30px; /* ระยะห่างระหว่างรูปกับปุ่ม */
-}
-
+/* ---------- หน้า 1 ---------- */
+#page1{ gap: 30px; }
 .gift{
-    width: 70%; 
-    max-width: 280px; /* ล็อคขนาดให้พอดี iPhone */
-    height: auto;
+    width: 70%; max-width: 280px; height: auto;
     animation:float 2s infinite ease-in-out;
     filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
 }
-
 @keyframes float{
     0%, 100%{transform:translateY(0);}
     50%{transform:translateY(-15px);}
 }
-
 .open-btn{
-    padding:14px 40px;
-    border:none;
-    border-radius:50px;
-    font-size:20px;
-    letter-spacing:1px;
-    color:#fff;
+    padding:14px 40px; border:none; border-radius:50px;
+    font-size:20px; letter-spacing:1px; color:#fff;
     background:linear-gradient(135deg,#4da3ff,#6fd0ff);
-    box-shadow:0 4px 15px rgba(77,163,255,0.6);
-    cursor:pointer;
+    box-shadow:0 4px 15px rgba(77,163,255,0.6); cursor:pointer;
     transition: transform 0.2s;
 }
 .open-btn:active { transform: scale(0.95); }
 
-/* ---------- หน้าใส่รหัส ---------- */
-#page2{
-    gap:20px;
-}
-
+/* ---------- หน้า 2 (แก้ให้กดเฉพาะกล่อง) ---------- */
+#page2{ gap:20px; }
 .pass-img{
-    width:60%; /* ลดขนาดลงนิดหน่อยเพื่อให้เหลือที่ใส่รหัส */
-    max-width:220px;
-    border-radius:30px;
+    width:60%; max-width:220px; border-radius:30px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
-
 .box{
     background:rgba(255, 255, 255, 0.95);
-    padding:25px 20px;
-    border-radius:25px;
+    padding:25px 20px; border-radius:25px;
     box-shadow:0 10px 30px rgba(0,0,0,0.15);
-    text-align:center;
-    width:90%;
-    max-width:340px; /* ขนาดพอดีมือถือ */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
+    text-align:center; width:90%; max-width:340px;
+    display: flex; flex-direction: column;
+    align-items: center; gap: 15px;
 }
-
-.box h3 {
-    font-size: 18px;
-    color: #333;
-}
+.box h3 { font-size: 18px; color: #333; }
 
 .code-box{
-    display:flex;
-    gap:8px;
-    justify-content:center;
-    width: 100%;
+    display:flex; gap:8px; justify-content:center; width: 100%;
+    cursor: pointer; padding: 10px 0;
 }
-
 .code-box span{
-    width:40px;
-    height:50px;
-    border:2px solid #b3d9ff;
-    border-radius:12px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:24px;
-    color:#4da3ff;
+    width:40px; height:50px; border:2px solid #b3d9ff;
+    border-radius:12px; display:flex; align-items:center;
+    justify-content:center; font-size:24px; color:#4da3ff;
     background: #fff;
 }
+#hiddenInput{ position:absolute; opacity:0; pointer-events: none; font-size: 16px; }
 
-#hiddenInput{
-    position:absolute;
-    opacity:0;
-    pointer-events: none; /* ป้องกันการกดโดยตรง ให้กดผ่าน JS */
-    font-size: 16px; /* ป้องกัน iOS Zoom */
-}
-
-/* ---------- หน้าคำถาม (Sad Dog) ---------- */
-.question-gif {
-    width: 60%;
-    max-width: 200px;
-    border-radius: 20px;
-    margin-bottom: 10px;
-}
-
-#page3 h2 {
-    font-size: 20px;
-    line-height: 1.5;
-    margin-bottom: 10px;
-    color: #444;
-}
-
-.answer-btns{
-    display:flex;
-    gap:30px;
-    justify-content:center;
-    margin-top: 10px;
-}
-
+/* ---------- หน้า 3 ---------- */
+.question-gif { width: 60%; max-width: 200px; border-radius: 20px; margin-bottom: 10px; }
+#page3 h2 { font-size: 20px; line-height: 1.5; margin-bottom: 10px; color: #444; }
+.answer-btns{ display:flex; gap:30px; justify-content:center; margin-top: 10px; }
 .icon-btn{
-    width:65px;
-    height:65px;
-    border-radius:50%;
-    border:none;
-    font-size:30px;
-    color:#fff;
-    cursor:pointer;
+    width:65px; height:65px; border-radius:50%; border:none;
+    font-size:30px; color:#fff; cursor:pointer;
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    transition: transform 0.2s;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: flex; justify-content: center; align-items: center;
 }
-.icon-btn:active { transform: scale(0.9); }
-
 .yes{background:linear-gradient(135deg, #4CAF50, #81c784);}
 .no{background:linear-gradient(135deg, #F44336, #e57373);}
 
-/* ---------- หน้าสุดท้าย (ข้อความ) ---------- */
-#page4 .box {
-    background: rgba(255,255,255,0.6); /* โปร่งแสงหน่อยให้เห็น BG สวยๆ */
-    box-shadow: none;       
-    padding: 10px;
+/* ---------- หน้า 4 (ปรับใหม่ตามสั่ง) ---------- */
+/* ลบ Background ของกล่องออก */
+#page4 .box { 
+    background: transparent !important; 
+    box-shadow: none !important; 
+    padding: 0;
+    width: 100%;
 }
 
-.final-img{
-    width:65%;
-    max-width:240px;
-    border-radius:25px;
-    margin-bottom:20px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+/* รูปภาพ: เพิ่ม Animation ZoomIn */
+.final-img{ 
+    width:70%; max-width:260px; border-radius:30px; 
+    margin-bottom:20px; 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2); 
+    opacity: 0; /* เริ่มต้นซ่อนไว้ */
+    transform: scale(0.5);
+}
+/* Class สำหรับเล่น Animation รูป */
+.final-img.play-anim {
+    animation: zoomIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
-#page4 h3 {
-    font-size: 16px;
-    line-height: 1.8; /* เพิ่มระยะห่างบรรทัดให้อ่านง่าย */
-    color: #2c3e50;
-    font-weight: 500;
+/* ข้อความ: เพิ่มเงาให้อ่านง่ายขึ้น + Animation */
+#page4 h3 { 
+    font-size: 16px; 
+    line-height: 1.8; 
+    color: #2c3e50; 
+    font-weight: 600;
+    text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.8); /* เพิ่มขอบขาวให้อ่านง่าย */
+    opacity: 0;
+    transform: translateY(20px);
+}
+/* Class สำหรับเล่น Animation ข้อความ */
+#page4 h3.play-anim {
+    animation: fadeInUp 1s ease 0.5s forwards; /* ดีเลย์ 0.5วิ รอรูปขึ้นก่อน */
+}
+
+/* Keyframes */
+@keyframes zoomIn {
+    to { opacity: 1; transform: scale(1); }
+}
+@keyframes fadeInUp {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ฝนหัวใจ (Heart Rain) */
+.heart-rain {
+    position: fixed;
+    top: -10vh;
+    font-size: 20px;
+    z-index: 1; /* อยู่หลัง Popup แต่อยู่หน้า BG */
+    animation: fall linear forwards;
+}
+
+@keyframes fall {
+    to { transform: translateY(110vh) rotate(360deg); }
 }
 
 /* ---------- Popup ---------- */
 .popup{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.6);
-    display:none;
-    justify-content:center;
-    align-items:center;
-    z-index:999;
-    backdrop-filter: blur(3px);
+    position:fixed; inset:0; background:rgba(0,0,0,.6);
+    display:none; justify-content:center; align-items:center;
+    z-index:999; backdrop-filter: blur(3px);
 }
 .popup.active{display:flex;}
-
 .popup-box{
-    background:#fff;
-    padding:30px 25px;
-    border-radius:25px;
-    position:relative;
-    text-align:center;
-    width:85%;
-    max-width:300px;
+    background:#fff; padding:30px 25px; border-radius:25px;
+    position:relative; text-align:center; width:85%; max-width:300px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
+.close{ position:absolute; top:10px; right:15px; font-size:24px; cursor:pointer; color: #aaa; padding: 5px; }
 
-.popup-box h3 {
-    font-size: 18px;
-    color: #444;
-    line-height: 1.5;
-}
-
-.close{
-    position:absolute;
-    top:10px;
-    right:15px;
-    font-size:24px;
-    cursor:pointer;
-    color: #aaa;
-    padding: 5px;
-}
-
-/* ---------- Responsive เพิ่มเติมสำหรับจอเล็กมาก ---------- */
+/* Responsive */
 @media (max-height: 700px) {
     .gift { width: 50%; }
     .pass-img { width: 40%; }
     .box { padding: 15px; }
     .code-box span { width: 35px; height: 45px; font-size: 20px; }
-    .final-img { width: 50%; margin-bottom: 10px; }
+    .final-img { width: 55%; margin-bottom: 10px; }
     #page4 h3 { font-size: 14px; }
 }
 </style>
@@ -272,11 +209,11 @@ body{
     <button class="open-btn" onclick="goPage(2)">เปิดสิเธอ</button>
 </div>
 
-<div class="section" id="page2" onclick="focusInput()">
+<div class="section" id="page2">
     <img src="photo1.png" class="pass-img">
     <div class="box">
         <h3>ใส่ให้ถูกนะเธอลองเดาว่ารหัสอะไร</h3>
-        <div class="code-box" id="code">
+        <div class="code-box" id="code" onclick="focusInput()">
             <span></span><span></span><span></span>
             <span></span><span></span><span></span>
         </div>
@@ -331,16 +268,20 @@ function showPage(n){
         setTimeout(()=>{
             current.classList.remove('active','exit');
             next.classList.add('active');
-            if(n===2) setTimeout(focusInput, 300); // รอ animation จบนิดนึงค่อยเรียกคีย์บอร์ด
+            
+            // ถ้าเป็นหน้า 4 ให้เริ่ม Animation และโปรยหัวใจ
+            if(n === 4) {
+                playFinalAnimation();
+                createHeartRain();
+            }
+
         },600);
     }else{
         next.classList.add('active');
     }
 }
 
-window.onpopstate=e=>{
-    showPage(e.state?.page||1);
-};
+window.onpopstate=e=>{ showPage(e.state?.page||1); };
 
 /* รหัส */
 const password="180725";
@@ -352,17 +293,14 @@ input.addEventListener('input',()=>{
     boxes.forEach((b,i)=>b.textContent=v[i]?"●":"");
     if(v.length===6){
         if(v===password) {
-            input.blur(); // ซ่อนคีย์บอร์ดเมื่อรหัสครบ
+            input.blur(); 
             setTimeout(() => goPage(3), 300);
         }
         else showPopup("ไม่ถูก เธอลองนึกดูดีๆวันสำคัญของเราอะ");
     }
 });
 
-// เปลี่ยน input type เป็น tel เพื่อให้แป้นตัวเลขขึ้นบนมือถือ
-function focusInput(){
-    input.focus();
-}
+function focusInput(){ input.focus(); }
 
 /* popup */
 function showPopup(text){
@@ -375,15 +313,55 @@ function showPopup(text){
 
 function closePopup(){
     document.getElementById('popup').classList.remove('active');
-    if(document.getElementById('page2').classList.contains('active')){
-        focusInput();
-    }
 }
 
 /* คำถาม */
 function love(ans){
     if(ans) goPage(4);
     else showPopup("เค้าให้โอกาสเธอตอบใหม่เค้าเสียใจนะเว้ย");
+}
+
+/* ฟังก์ชั่น Animation หน้าสุดท้าย */
+function playFinalAnimation() {
+    const img = document.querySelector('#page4 .final-img');
+    const text = document.querySelector('#page4 h3');
+    
+    // Reset animation (เผื่อกด back กลับมาดูใหม่)
+    img.classList.remove('play-anim');
+    text.classList.remove('play-anim');
+    
+    // Trigger reflow
+    void img.offsetWidth;
+    
+    // Add class to start animation
+    img.classList.add('play-anim');
+    text.classList.add('play-anim');
+}
+
+/* ฟังก์ชั่นสร้างฝนหัวใจ */
+function createHeartRain() {
+    const colors = ['#ff4d6d', '#ff758f', '#c9184a', '#ff8fa3', '#fff0f3'];
+    const container = document.getElementById('page4');
+    
+    // สร้างหัวใจ 30 ดวง
+    for(let i=0; i<30; i++) {
+        setTimeout(() => {
+            const heart = document.createElement('div');
+            heart.classList.add('heart-rain');
+            heart.innerHTML = '❤';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 2 + 2) + 's'; // 2-4 วินาที
+            heart.style.fontSize = (Math.random() * 20 + 15) + 'px'; // ขนาด 15-35px
+            heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+            
+            document.body.appendChild(heart);
+            
+            // ลบ element เมื่อ animation จบ
+            setTimeout(() => {
+                heart.remove();
+            }, 4000);
+        }, i * 150); // ปล่อยลงมาทีละดวงห่างกัน 0.15 วิ
+    }
 }
 </script>
 
