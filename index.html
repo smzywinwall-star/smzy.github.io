@@ -23,7 +23,7 @@ body {
 /* ===== Section ===== */
 .section {
     width: 100vw;
-    max-height: 775px;   /* จำกัดความยาวสูงสุด */
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -33,16 +33,25 @@ body {
     transform: translateX(50px);
     transition: all 0.5s ease;
     pointer-events:none;
-    overflow-y:auto;     /* เลื่อนถ้าเนื้อหายาวเกิน */
+    overflow-y:auto;
 }
 
 .section.active { opacity:1; transform: translateX(0); pointer-events:auto; }
 .section.exit { opacity:0; transform: translateX(-50px); }
 
+/* ---------- รูป Responsive ---------- */
+img {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
 /* ---------- กล่องเนื้อหา ---------- */
 .box {
     width: 90%;
-    max-width: 775px;
+    max-width: 350px;
     background:#fff;
     border-radius:20px;
     padding:20px;
@@ -56,15 +65,6 @@ body {
     background: transparent;
     box-shadow: none;
     padding:0;
-}
-
-/* ---------- รูป Responsive ---------- */
-img {
-    width: 100%;
-    max-width: 300px;
-    height: auto;
-    display: block;
-    margin: 0 auto;
 }
 
 /* ---------- ปุ่ม ---------- */
@@ -146,16 +146,35 @@ button { cursor:pointer; }
     cursor:pointer;
 }
 
-/* ---------- Media Queries สำหรับ iPhone 11 / iPad ---------- */
-@media only screen and (device-width:414px) and (device-height:896px) { /* iPhone 11 */
-    .box { max-width:90%; }
-    img { max-width:280px; }
-    .open-btn { font-size:16px; padding:12px 25px; }
-}
-@media only screen and (device-width:768px) and (device-height:1024px) { /* iPad */
-    .box { max-width:775px; }
-    img { max-width:400px; }
-    .open-btn { font-size:18px; padding:14px 30px; }
+/* ---------- Media Queries สำหรับ iPhone 11 ---------- */
+@media only screen and (device-width:414px) and (device-height:896px) { 
+    .box { 
+        max-width: 320px; 
+        padding: 15px; 
+    }
+    img { 
+        max-width: 250px; 
+        margin-top: 15px;
+    }
+    .open-btn { 
+        font-size: 16px; 
+        padding: 12px 25px; 
+        box-shadow:0 0 15px rgba(77,163,255,0.6); 
+    }
+    .code-box span {
+        width: 35px;
+        height: 45px;
+        font-size: 20px;
+    }
+    .icon-btn {
+        width:60px;
+        height:60px;
+        font-size:28px;
+    }
+    #page4 .box h3 {
+        font-size: 16px;
+        line-height: 1.4;
+    }
 }
 </style>
 </head>
@@ -198,8 +217,8 @@ button { cursor:pointer; }
         <img src="photo2.png" class="final-img" alt="final">
         <h3>Happy New year นะคะเธอ<br>
         ขอบคุณที่เกิดมาให้เค้ารัก เค้าดีใจมากๆที่ได้มาเจอเธอ<br>
-        เค้าหวังว่าเค้าจะได้อยู่กับเธอไปนานๆไม่จากกันไปไหน<br>
-        เค้าจะตั้งใจรักเธอมากๆ รักที่สุดเลย อยู่ด้วยกันนานๆนะ<br>
+        เค้าหวังว่าเค้าจะได้อยู่กับเธอไปนานๆไม่จากกันไปไหน
+        เค้าจะตั้งใจรักเธอมากๆ รักที่สุดเลย อยู่ด้วยกันนานๆนะ
         รักมากขึ้นทุกวัน ขอให้ปีใหม่นี้เป็นปีที่ดีของเรา</h3>
     </div>
 </div>
