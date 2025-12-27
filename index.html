@@ -17,92 +17,86 @@
 *{
     box-sizing:border-box;
     font-family:'MyFont' !important;
+    margin:0;
+    padding:0;
 }
 
 body{
-    margin:0;
-    background:url('Green And Blue Gradient Dreamy Cloud Blank Background Instagram Post.png') center/cover;
+    background:url('Green And Blue Gradient Dreamy Cloud Blank Background Instagram Post.png') center/cover no-repeat;
+    background-size:cover;
+    font-size:16px;
+    line-height:1.6;
+    color:#000;
+    overflow-x:hidden;
 }
 
-/* ===== Animation เปลี่ยนหน้า ===== */
+/* ===== Section ===== */
 .section{
-    position: relative;
-    display: flex;
+    display:flex;
     flex-direction: column;
-    justify-content: flex-start;
     align-items: center;
-    min-height: 100vh;
+    padding:20px;
+    min-height:100vh;
     opacity:0;
-    transform:translateX(50px);
-    transition:all .6s ease;
+    transform: translateX(50px);
+    transition: all 0.5s ease;
     pointer-events:none;
-    padding: 20px;
+    overflow-y:auto;
 }
 
 .section.active{
     opacity:1;
-    transform:translateX(0);
+    transform: translateX(0);
     pointer-events:auto;
 }
 
 .section.exit{
     opacity:0;
-    transform:translateX(-50px);
+    transform: translateX(-50px);
 }
 
-/* ---------- หน้าแรก ---------- */
-#page1{
-    flex-direction: column;
-    text-align:center;
+/* ---------- รูป Responsive ---------- */
+img {
+    width:100%;
+    max-width:300px;
+    height:auto;
+    display:block;
+    margin: 0 auto;
 }
 
-.gift{
-    width: 90%;
-    max-width: 300px;
-    animation: float 2s infinite ease-in-out;
-}
-
-@keyframes float{
-    50%{transform:translateY(-15px);}
-}
-
-.open-btn{
-    margin-top:30px;
-    padding:16px 40px;
-    border:none;
-    border-radius:40px;
-    font-size:20px;
-    letter-spacing:0.5px;
-    color:#fff;
-    background:linear-gradient(135deg,#4da3ff,#6fd0ff);
-    box-shadow:0 0 25px rgba(77,163,255,.9);
+/* ---------- ปุ่ม ---------- */
+button {
     cursor:pointer;
 }
 
-/* ---------- หน้าใส่รหัส ---------- */
-#page2{gap:20px;}
-
-.pass-img {
-    width: 90%;
-    max-width: 300px;
-    border-radius: 60px;
-    height: auto;
+.open-btn{
+    margin-top:20px;
+    padding:14px 35px;
+    border:none;
+    border-radius:40px;
+    font-size:18px;
+    letter-spacing:0.5px;
+    color:#fff;
+    background:linear-gradient(135deg,#4da3ff,#6fd0ff);
+    box-shadow:0 0 25px rgba(77,163,255,0.8);
 }
 
-#page2 .box {
-    width: 90%;
+/* ---------- หน้าใส่รหัส ---------- */
+.box{
+    width: 100%;
     max-width: 350px;
-    padding: 20px;
-    border-radius: 20px;
     background: #fff;
-    box-shadow:0 10px 30px rgba(0,0,0,.2);
-    text-align: center;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+    text-align:center;
+    margin-top:20px;
 }
 
 .code-box{
     display:flex;
-    gap:10px;
     justify-content:center;
+    gap:10px;
     margin-top:15px;
 }
 
@@ -123,25 +117,61 @@ body{
     opacity:0;
 }
 
+/* ---------- คำถาม ---------- */
+.answer-btns{
+    display:flex;
+    justify-content:center;
+    gap:30px;
+    flex-wrap:wrap;
+    margin-top:15px;
+}
+
+.icon-btn{
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    border:none;
+    font-size:32px;
+    color:#fff;
+}
+
+.yes{background:#4CAF50;}
+.no{background:#F44336;}
+
+/* ---------- หน้า Final ---------- */
+#page4 .box {
+    background: transparent;
+    box-shadow: none;
+    padding:0;
+    text-align:center;
+}
+
+#page4 .box h3 {
+    max-width:320px;
+    margin:0 auto;
+    line-height:1.6;
+}
+
 /* ---------- popup ---------- */
 .popup{
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,.45);
+    background:rgba(0,0,0,0.45);
     display:none;
     justify-content:center;
     align-items:center;
     z-index:10;
 }
+
 .popup.active{display:flex;}
 
 .popup-box{
     background:#fff;
     padding:25px 35px;
     border-radius:20px;
-    position:relative;
     text-align:center;
     min-width:260px;
+    position:relative;
 }
 
 .close{
@@ -152,59 +182,17 @@ body{
     cursor:pointer;
 }
 
-/* ---------- คำถาม ---------- */
-.answer-btns{
-    display:flex;
-    gap:40px;
-    justify-content:center;
+/* ---------- Media Queries ---------- */
+@media(max-width:480px){
+    .open-btn{padding:12px 25px; font-size:16px;}
+    .box, #page4 .box{max-width:95%;}
+    img{max-width:90%;}
+    .icon-btn{width:60px; height:60px; font-size:28px;}
 }
 
-.icon-btn{
-    width:70px;
-    height:70px;
-    border-radius:50%;
-    border:none;
-    font-size:32px;
-    color:#fff;
-    cursor:pointer;
-}
-
-.yes{background:#4CAF50;}
-.no{background:#F44336;}
-
-/* ---------- หน้าสุดท้าย ---------- */
-.final-img{
-    width: 90%;
-    max-width: 260px;
-    border-radius:20px;
-    margin-bottom:15px;
-}
-
-#page4 .box {
-    background: transparent;
-    box-shadow: none;
-    padding: 0;
-    text-align: center;
-}
-
-#page4 .box h3 {
-    max-width: 300px;
-    margin: 0 auto;
-    line-height: 1.6;
-    text-align: center;
-}
-
-/* ---------- Media Queries สำหรับ responsive ---------- */
-@media (max-width: 480px) {
-    .open-btn {padding: 12px 28px; font-size: 18px;}
-    .pass-img, .final-img {width: 95%; max-width: 250px;}
-    #page2 .box, #page4 .box {width: 95%; max-width: 280px; padding: 15px;}
-}
-
-@media (min-width: 481px) and (max-width: 768px) {
-    .open-btn {padding: 14px 36px; font-size: 19px;}
-    .pass-img, .final-img {width: 90%; max-width: 280px;}
-    #page2 .box, #page4 .box {width: 90%; max-width: 320px;}
+@media(min-width:481px) and (max-width:768px){
+    .box, #page4 .box{max-width:90%;}
+    img{max-width:280px;}
 }
 </style>
 </head>
@@ -213,13 +201,13 @@ body{
 
 <!-- หน้า 1 -->
 <div class="section active" id="page1">
-    <img src="gift.jpg.png" class="gift">
+    <img src="gift.jpg.png" alt="gift">
     <button class="open-btn" onclick="goPage(2)">เปิดสิเธอ</button>
 </div>
 
 <!-- หน้า 2 -->
 <div class="section" id="page2" onclick="focusInput()">
-    <img src="photo1.png" class="pass-img">
+    <img src="photo1.png" class="pass-img" alt="photo1">
     <div class="box">
         <h3>ใส่ให้ถูกนะเธอลองเดาว่ารหัสอะไร</h3>
         <div class="code-box" id="code">
@@ -233,7 +221,7 @@ body{
 <!-- หน้า 3 -->
 <div class="section" id="page3">
     <div class="box">
-        <img src="Sad Dog GIF.gif" class="question-gif">
+        <img src="Sad Dog GIF.gif" alt="question-gif">
         <h2>เค้ารักเธอมากๆเลยนะเธอรักเหมือนที่เค้ารักมั้ย</h2>
         <div class="answer-btns">
             <button class="icon-btn yes" onclick="love(true)">✔</button>
@@ -245,13 +233,12 @@ body{
 <!-- หน้า 4 -->
 <div class="section" id="page4">
     <div class="box">
-        <img src="photo2.png" class="final-img">
+        <img src="photo2.png" class="final-img" alt="final">
         <h3>Happy New year นะคะเธอ<br>
         ขอบคุณที่เกิดมาให้เค้ารัก เค้าดีใจมากๆที่ได้มาเจอเธอ<br>
         เค้าหวังว่าเค้าจะได้อยู่กับเธอไปนานๆไม่จากกันไปไหน<br>
         เค้าจะตั้งใจรักเธอมากๆ รักที่สุดเลย อยู่ด้วยกันนานๆนะ<br>
-        รักมากขึ้นทุกวัน ขอให้ปีใหม่นี้เป็นปีที่ดีของเรา
-        </h3>
+        รักมากขึ้นทุกวัน ขอให้ปีใหม่นี้เป็นปีที่ดีของเรา</h3>
     </div>
 </div>
 
@@ -281,7 +268,7 @@ function showPage(n){
             current.classList.remove('active','exit');
             next.classList.add('active');
             if(n===2) focusInput();
-        },600);
+        },500);
     }else{
         next.classList.add('active');
     }
@@ -309,6 +296,8 @@ function focusInput(){input.focus();}
 
 /* popup */
 function showPopup(text){
+    const popup=document.getElementById('popup');
+    const popupText=document.getElementById('popupText');
     popupText.innerText=text;
     popup.classList.add('active');
     input.value="";
@@ -316,7 +305,7 @@ function showPopup(text){
 }
 
 function closePopup(){
-    popup.classList.remove('active');
+    document.getElementById('popup').classList.remove('active');
     focusInput();
 }
 
