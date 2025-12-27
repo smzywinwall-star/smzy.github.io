@@ -3,8 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <title>For My Love 💙</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
+/* ===== ฟอนต์ ===== */
 @font-face{
     font-family:'MyFont';
     src:url('Demordlaimuekean-Regular.ttf') format('truetype');
@@ -12,183 +14,217 @@
     font-style:normal;
 }
 
-* { box-sizing:border-box; margin:0; padding:0; font-family:'MyFont' !important; }
-body { 
-    margin:0; 
-    background:url('Green And Blue Gradient Dreamy Cloud Blank Background Instagram Post.png') center/cover no-repeat; 
-    background-size:cover; 
-    overflow:hidden; 
-}
-
-/* ===== Section ===== */
-.section {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 20px;
-    opacity:0;
-    transform: translateX(50px);
-    transition: all 0.5s ease;
-    pointer-events:none;
-    overflow-y:auto;
-}
-
-.section.active { opacity:1; transform: translateX(0); pointer-events:auto; }
-.section.exit { opacity:0; transform: translateX(-50px); }
-
-/* ---------- รูป Responsive ---------- */
-img {
-    width: 100%;
-    max-width: 300px;
-    height: auto;
-    display: block;
-    margin: 0 auto;
-}
-
-/* ---------- กล่องเนื้อหา ---------- */
-.box {
-    width: 90%;
-    max-width: 350px;
-    background:#fff;
-    border-radius:20px;
-    padding:20px;
-    box-shadow:0 10px 30px rgba(0,0,0,0.2);
-    text-align:center;
-    margin-top:20px;
-}
-
-/* หน้า Final ไม่มีกรอบขาว */
-#page4 .box {
-    background: transparent;
-    box-shadow: none;
+/* บังคับทุกอย่างใช้ฟอนต์นี้ */
+*{
+    box-sizing:border-box;
+    font-family:'MyFont' !important;
+    margin:0;
     padding:0;
 }
 
-/* ---------- ปุ่ม ---------- */
-button { cursor:pointer; }
-.open-btn {
-    margin-top: 20px;
-    padding: 14px 35px;
+/* ===== Body ===== */
+body{
+    background:url('Green And Blue Gradient Dreamy Cloud Blank Background Instagram Post.png') center/cover;
+    overflow-x:hidden;
+}
+
+/* ===== Section / Animation ===== */
+.section{
+    position:absolute;
+    inset:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    opacity:0;
+    transform:translateX(50px);
+    transition:all .6s ease;
+    pointer-events:none;
+    padding:20px;
+}
+
+.section.active{
+    opacity:1;
+    transform:translateX(0);
+    pointer-events:auto;
+}
+
+.section.exit{
+    opacity:0;
+    transform:translateX(-50px);
+}
+
+/* ---------- หน้าแรก ---------- */
+#page1{
+    flex-direction:column;
+    text-align:center;
+}
+
+.gift{
+    width:90%;
+    max-width:300px;
+    animation:float 2s infinite ease-in-out;
+}
+
+@keyframes float{
+    50%{transform:translateY(-15px);}
+}
+
+.open-btn{
+    margin-top:20px;
+    padding:12px 35px;
     border:none;
     border-radius:40px;
     font-size:18px;
     letter-spacing:0.5px;
     color:#fff;
-    background: linear-gradient(135deg,#4da3ff,#6fd0ff);
-    box-shadow:0 0 25px rgba(77,163,255,0.8);
+    background:linear-gradient(135deg,#4da3ff,#6fd0ff);
+    box-shadow:0 0 20px rgba(77,163,255,.9);
+    cursor:pointer;
 }
 
-/* ---------- รหัส ---------- */
-.code-box {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 15px;
+/* ---------- หน้าใส่รหัส ---------- */
+#page2{
+    flex-direction:column;
+    gap:20px;
 }
-.code-box span {
-    width: 40px;
-    height: 50px;
-    border: 2px solid #4da3ff;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 22px;
-    color: #4da3ff;
-}
-#hiddenInput { position:absolute; opacity:0; }
 
-/* ---------- คำถาม ---------- */
-.answer-btns {
+.pass-img{
+    width:70%;
+    max-width:250px;
+    border-radius:40px;
+}
+
+.box{
+    background:#fff;
+    padding:20px;
+    border-radius:20px;
+    box-shadow:0 8px 20px rgba(0,0,0,.2);
+    text-align:center;
+    width:90%;
+    max-width:350px;
+}
+
+.code-box{
     display:flex;
+    gap:8px;
     justify-content:center;
-    gap:30px;
-    margin-top:15px;
+    margin-top:10px;
 }
-.icon-btn {
-    width:70px;
-    height:70px;
-    border-radius:50%;
-    border:none;
-    font-size:32px;
-    color:#fff;
+
+.code-box span{
+    width:35px;
+    height:45px;
+    border:2px solid #4da3ff;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+    color:#4da3ff;
 }
-.yes{ background:#4CAF50; }
-.no{ background:#F44336; }
+
+#hiddenInput{
+    position:absolute;
+    opacity:0;
+}
 
 /* ---------- popup ---------- */
-.popup {
-    position: fixed;
+.popup{
+    position:fixed;
     inset:0;
-    background: rgba(0,0,0,0.45);
+    background:rgba(0,0,0,.45);
     display:none;
     justify-content:center;
     align-items:center;
     z-index:10;
 }
-.popup.active { display:flex; }
-.popup-box {
+.popup.active{display:flex;}
+
+.popup-box{
     background:#fff;
-    padding:25px 35px;
+    padding:20px 25px;
     border-radius:20px;
+    position:relative;
     text-align:center;
-    min-width:260px;
-    position: relative;
+    width:80%;
+    max-width:280px;
 }
-.close {
+
+.close{
     position:absolute;
-    top:10px;
-    right:15px;
-    font-size:20px;
+    top:8px;
+    right:12px;
+    font-size:18px;
     cursor:pointer;
 }
 
-/* ---------- Media Queries สำหรับ iPhone 11 ---------- */
-@media only screen and (device-width:414px) and (device-height:896px) { 
-    .box { 
-        max-width: 320px; 
-        padding: 15px; 
-    }
-    img { 
-        max-width: 250px; 
-        margin-top: 15px;
-    }
-    .open-btn { 
-        font-size: 16px; 
-        padding: 12px 25px; 
-        box-shadow:0 0 15px rgba(77,163,255,0.6); 
-    }
-    .code-box span {
-        width: 35px;
-        height: 45px;
-        font-size: 20px;
-    }
-    .icon-btn {
-        width:60px;
-        height:60px;
-        font-size:28px;
-    }
-    #page4 .box h3 {
-        font-size: 16px;
-        line-height: 1.4;
-    }
+/* ---------- คำถาม ---------- */
+.answer-btns{
+    display:flex;
+    gap:20px;
+    justify-content:center;
+}
+
+.icon-btn{
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    border:none;
+    font-size:28px;
+    color:#fff;
+    cursor:pointer;
+}
+
+.yes{background:#4CAF50;}
+.no{background:#F44336;}
+
+/* ---------- หน้าสุดท้าย ---------- */
+.final-img{
+    width:70%;
+    max-width:220px;
+    border-radius:20px;
+    margin-bottom:15px;
+}
+
+/* ---------- หน้าสุดท้าย ปรับข้อความอ่านง่าย ---------- */
+#page4 .box {
+    background: transparent;  
+    box-shadow: none;          
+    padding: 0;
+    text-align: center;
+}
+
+#page4 .box h3 {
+    max-width: 90%;
+    margin: 0 auto;
+    line-height: 1.6;
+    text-align: center;
+    font-size:16px;
+}
+
+/* ---------- Responsive สำหรับมือถือทุกขนาด ---------- */
+@media (max-width:500px){
+    .open-btn{font-size:16px; padding:10px 28px;}
+    .code-box span{width:30px;height:40px; font-size:18px;}
+    .icon-btn{width:50px; height:50px; font-size:24px;}
+    .final-img{max-width:180px;}
+    #page4 .box h3{font-size:15px;}
+    .gift{max-width:250px;}
 }
 </style>
 </head>
+
 <body>
 
 <!-- หน้า 1 -->
 <div class="section active" id="page1">
-    <img src="gift.jpg.png" alt="gift">
+    <img src="gift.jpg.png" class="gift">
     <button class="open-btn" onclick="goPage(2)">เปิดสิเธอ</button>
 </div>
 
 <!-- หน้า 2 -->
 <div class="section" id="page2" onclick="focusInput()">
-    <img src="photo1.png" class="pass-img" alt="photo1">
+    <img src="photo1.png" class="pass-img">
     <div class="box">
         <h3>ใส่ให้ถูกนะเธอลองเดาว่ารหัสอะไร</h3>
         <div class="code-box" id="code">
@@ -202,7 +238,7 @@ button { cursor:pointer; }
 <!-- หน้า 3 -->
 <div class="section" id="page3">
     <div class="box">
-        <img src="Sad Dog GIF.gif" alt="question-gif">
+        <img src="Sad Dog GIF.gif" class="question-gif">
         <h2>เค้ารักเธอมากๆเลยนะเธอรักเหมือนที่เค้ารักมั้ย</h2>
         <div class="answer-btns">
             <button class="icon-btn yes" onclick="love(true)">✔</button>
@@ -214,12 +250,13 @@ button { cursor:pointer; }
 <!-- หน้า 4 -->
 <div class="section" id="page4">
     <div class="box">
-        <img src="photo2.png" class="final-img" alt="final">
+        <img src="photo2.png" class="final-img">
         <h3>Happy New year นะคะเธอ<br>
         ขอบคุณที่เกิดมาให้เค้ารัก เค้าดีใจมากๆที่ได้มาเจอเธอ<br>
-        เค้าหวังว่าเค้าจะได้อยู่กับเธอไปนานๆไม่จากกันไปไหน
-        เค้าจะตั้งใจรักเธอมากๆ รักที่สุดเลย อยู่ด้วยกันนานๆนะ
-        รักมากขึ้นทุกวัน ขอให้ปีใหม่นี้เป็นปีที่ดีของเรา</h3>
+        เค้าหวังว่าเค้าจะได้อยู่กับเธอไปนานๆไม่จากกันไปไหน<br>
+        เค้าจะตั้งใจรักเธอมากๆ รักที่สุดเลย อยู่ด้วยกันนานๆนะ<br>
+        รักมากขึ้นทุกวัน ขอให้ปีใหม่นี้เป็นปีที่ดีของเรา
+        </h3>
     </div>
 </div>
 
@@ -233,25 +270,37 @@ button { cursor:pointer; }
 
 <script>
 history.replaceState({page:1},'', '');
-function goPage(n){ history.pushState({page:n},'', ''); showPage(n);}
+
+function goPage(n){
+    history.pushState({page:n},'', '');
+    showPage(n);
+}
+
 function showPage(n){
     const current = document.querySelector('.section.active');
     const next = document.getElementById('page'+n);
+
     if(current){
         current.classList.add('exit');
         setTimeout(()=>{
             current.classList.remove('active','exit');
             next.classList.add('active');
             if(n===2) focusInput();
-        },500);
-    }else{ next.classList.add('active'); }
+        },600);
+    }else{
+        next.classList.add('active');
+    }
 }
-window.onpopstate=e=>{ showPage(e.state?.page||1); }
+
+window.onpopstate=e=>{
+    showPage(e.state?.page||1);
+};
 
 /* รหัส */
 const password="180725";
 const input=document.getElementById('hiddenInput');
 const boxes=document.querySelectorAll('#code span');
+
 input.addEventListener('input',()=>{
     let v=input.value;
     boxes.forEach((b,i)=>b.textContent=v[i]?"●":"");
@@ -260,21 +309,27 @@ input.addEventListener('input',()=>{
         else showPopup("ไม่ถูก เธอลองนึกดูดีๆวันสำคัญของเราอะ");
     }
 });
+
 function focusInput(){input.focus();}
 
 /* popup */
 function showPopup(text){
-    const popup=document.getElementById('popup');
-    const popupText=document.getElementById('popupText');
     popupText.innerText=text;
     popup.classList.add('active');
     input.value="";
     boxes.forEach(b=>b.textContent="");
 }
-function closePopup(){ document.getElementById('popup').classList.remove('active'); focusInput(); }
+
+function closePopup(){
+    popup.classList.remove('active');
+    focusInput();
+}
 
 /* คำถาม */
-function love(ans){ if(ans) goPage(4); else showPopup("เค้าให้โอกาสเธอตอบใหม่เค้าเสียใจนะเว้ย"); }
+function love(ans){
+    if(ans) goPage(4);
+    else showPopup("เค้าให้โอกาสเธอตอบใหม่เค้าเสียใจนะเว้ย");
+}
 </script>
 
 </body>
