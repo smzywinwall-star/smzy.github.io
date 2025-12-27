@@ -3,10 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <title>For My Love 💙</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <style>
-/* ===== ฟอนต์ ===== */
 @font-face{
     font-family:'MyFont';
     src:url('Demordlaimuekean-Regular.ttf') format('truetype');
@@ -14,29 +12,23 @@
     font-style:normal;
 }
 
-*{
-    box-sizing:border-box;
-    font-family:'MyFont' !important;
-    margin:0;
-    padding:0;
-}
-
-body{
-    background:url('Green And Blue Gradient Dreamy Cloud Blank Background Instagram Post.png') center/cover no-repeat;
-    background-size:cover;
-    font-size:16px;
-    line-height:1.6;
-    color:#000;
-    overflow-x:hidden;
+* { box-sizing:border-box; margin:0; padding:0; font-family:'MyFont' !important; }
+body { 
+    margin:0; 
+    background:url('Green And Blue Gradient Dreamy Cloud Blank Background Instagram Post.png') center/cover no-repeat; 
+    background-size:cover; 
+    overflow:hidden; 
 }
 
 /* ===== Section ===== */
-.section{
-    display:flex;
+.section {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
     flex-direction: column;
     align-items: center;
-    padding:20px;
-    min-height:100vh;
+    justify-content: flex-start;
+    padding: 20px;
     opacity:0;
     transform: translateX(50px);
     transition: all 0.5s ease;
@@ -44,89 +36,79 @@ body{
     overflow-y:auto;
 }
 
-.section.active{
-    opacity:1;
-    transform: translateX(0);
-    pointer-events:auto;
-}
-
-.section.exit{
-    opacity:0;
-    transform: translateX(-50px);
-}
+.section.active { opacity:1; transform: translateX(0); pointer-events:auto; }
+.section.exit { opacity:0; transform: translateX(-50px); }
 
 /* ---------- รูป Responsive ---------- */
 img {
-    width:100%;
-    max-width:300px;
-    height:auto;
-    display:block;
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    display: block;
     margin: 0 auto;
 }
 
-/* ---------- ปุ่ม ---------- */
-button {
-    cursor:pointer;
-}
-
-.open-btn{
-    margin-top:20px;
-    padding:14px 35px;
-    border:none;
-    border-radius:40px;
-    font-size:18px;
-    letter-spacing:0.5px;
-    color:#fff;
-    background:linear-gradient(135deg,#4da3ff,#6fd0ff);
-    box-shadow:0 0 25px rgba(77,163,255,0.8);
-}
-
-/* ---------- หน้าใส่รหัส ---------- */
-.box{
-    width: 100%;
+/* ---------- กล่องเนื้อหา ---------- */
+.box {
+    width: 90%;
     max-width: 350px;
-    background: #fff;
-    border-radius: 20px;
-    padding: 20px;
+    background:#fff;
+    border-radius:20px;
+    padding:20px;
     box-shadow:0 10px 30px rgba(0,0,0,0.2);
     text-align:center;
     margin-top:20px;
 }
 
-.code-box{
-    display:flex;
-    justify-content:center;
-    gap:10px;
-    margin-top:15px;
+/* หน้า Final ไม่มีกรอบขาว */
+#page4 .box {
+    background: transparent;
+    box-shadow: none;
+    padding:0;
 }
 
-.code-box span{
-    width:40px;
-    height:50px;
-    border:2px solid #4da3ff;
-    border-radius:10px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:22px;
-    color:#4da3ff;
+/* ---------- ปุ่ม ---------- */
+button { cursor:pointer; }
+.open-btn {
+    margin-top: 20px;
+    padding: 14px 35px;
+    border:none;
+    border-radius:40px;
+    font-size:18px;
+    letter-spacing:0.5px;
+    color:#fff;
+    background: linear-gradient(135deg,#4da3ff,#6fd0ff);
+    box-shadow:0 0 25px rgba(77,163,255,0.8);
 }
 
-#hiddenInput{
-    position:absolute;
-    opacity:0;
+/* ---------- รหัส ---------- */
+.code-box {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
 }
+.code-box span {
+    width: 40px;
+    height: 50px;
+    border: 2px solid #4da3ff;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    color: #4da3ff;
+}
+#hiddenInput { position:absolute; opacity:0; }
 
 /* ---------- คำถาม ---------- */
-.answer-btns{
+.answer-btns {
     display:flex;
     justify-content:center;
     gap:30px;
-    flex-wrap:wrap;
     margin-top:15px;
 }
-
-.icon-btn{
+.icon-btn {
     width:70px;
     height:70px;
     border-radius:50%;
@@ -134,47 +116,29 @@ button {
     font-size:32px;
     color:#fff;
 }
-
-.yes{background:#4CAF50;}
-.no{background:#F44336;}
-
-/* ---------- หน้า Final ---------- */
-#page4 .box {
-    background: transparent;
-    box-shadow: none;
-    padding:0;
-    text-align:center;
-}
-
-#page4 .box h3 {
-    max-width:320px;
-    margin:0 auto;
-    line-height:1.6;
-}
+.yes{ background:#4CAF50; }
+.no{ background:#F44336; }
 
 /* ---------- popup ---------- */
-.popup{
-    position:fixed;
+.popup {
+    position: fixed;
     inset:0;
-    background:rgba(0,0,0,0.45);
+    background: rgba(0,0,0,0.45);
     display:none;
     justify-content:center;
     align-items:center;
     z-index:10;
 }
-
-.popup.active{display:flex;}
-
-.popup-box{
+.popup.active { display:flex; }
+.popup-box {
     background:#fff;
     padding:25px 35px;
     border-radius:20px;
     text-align:center;
     min-width:260px;
-    position:relative;
+    position: relative;
 }
-
-.close{
+.close {
     position:absolute;
     top:10px;
     right:15px;
@@ -182,21 +146,19 @@ button {
     cursor:pointer;
 }
 
-/* ---------- Media Queries ---------- */
-@media(max-width:480px){
-    .open-btn{padding:12px 25px; font-size:16px;}
-    .box, #page4 .box{max-width:95%;}
-    img{max-width:90%;}
-    .icon-btn{width:60px; height:60px; font-size:28px;}
+/* ---------- Media Queries สำหรับ iPhone 11 และ iPad ---------- */
+@media only screen and (device-width:414px) and (device-height:896px) { /* iPhone 11 */
+    .box { max-width:90%; }
+    img { max-width:280px; }
+    .open-btn { font-size:16px; padding:12px 25px; }
 }
-
-@media(min-width:481px) and (max-width:768px){
-    .box, #page4 .box{max-width:90%;}
-    img{max-width:280px;}
+@media only screen and (device-width:768px) and (device-height:1024px) { /* iPad */
+    .box { max-width:70%; }
+    img { max-width:400px; }
+    .open-btn { font-size:18px; padding:14px 30px; }
 }
 </style>
 </head>
-
 <body>
 
 <!-- หน้า 1 -->
@@ -236,8 +198,8 @@ button {
         <img src="photo2.png" class="final-img" alt="final">
         <h3>Happy New year นะคะเธอ<br>
         ขอบคุณที่เกิดมาให้เค้ารัก เค้าดีใจมากๆที่ได้มาเจอเธอ<br>
-        เค้าหวังว่าเค้าจะได้อยู่กับเธอไปนานๆไม่จากกันไปไหน<br>
-        เค้าจะตั้งใจรักเธอมากๆ รักที่สุดเลย อยู่ด้วยกันนานๆนะ<br>
+        เค้าหวังว่าเค้าจะได้อยู่กับเธอไปนานๆไม่จากกันไปไหน
+        เค้าจะตั้งใจรักเธอมากๆ รักที่สุดเลย อยู่ด้วยกันนานๆนะ
         รักมากขึ้นทุกวัน ขอให้ปีใหม่นี้เป็นปีที่ดีของเรา</h3>
     </div>
 </div>
@@ -252,16 +214,10 @@ button {
 
 <script>
 history.replaceState({page:1},'', '');
-
-function goPage(n){
-    history.pushState({page:n},'', '');
-    showPage(n);
-}
-
+function goPage(n){ history.pushState({page:n},'', ''); showPage(n);}
 function showPage(n){
     const current = document.querySelector('.section.active');
     const next = document.getElementById('page'+n);
-
     if(current){
         current.classList.add('exit');
         setTimeout(()=>{
@@ -269,20 +225,14 @@ function showPage(n){
             next.classList.add('active');
             if(n===2) focusInput();
         },500);
-    }else{
-        next.classList.add('active');
-    }
+    }else{ next.classList.add('active'); }
 }
-
-window.onpopstate=e=>{
-    showPage(e.state?.page||1);
-};
+window.onpopstate=e=>{ showPage(e.state?.page||1); }
 
 /* รหัส */
 const password="180725";
 const input=document.getElementById('hiddenInput');
 const boxes=document.querySelectorAll('#code span');
-
 input.addEventListener('input',()=>{
     let v=input.value;
     boxes.forEach((b,i)=>b.textContent=v[i]?"●":"");
@@ -291,7 +241,6 @@ input.addEventListener('input',()=>{
         else showPopup("ไม่ถูก เธอลองนึกดูดีๆวันสำคัญของเราอะ");
     }
 });
-
 function focusInput(){input.focus();}
 
 /* popup */
@@ -303,17 +252,10 @@ function showPopup(text){
     input.value="";
     boxes.forEach(b=>b.textContent="");
 }
-
-function closePopup(){
-    document.getElementById('popup').classList.remove('active');
-    focusInput();
-}
+function closePopup(){ document.getElementById('popup').classList.remove('active'); focusInput(); }
 
 /* คำถาม */
-function love(ans){
-    if(ans) goPage(4);
-    else showPopup("เค้าให้โอกาสเธอตอบใหม่เค้าเสียใจนะเว้ย");
-}
+function love(ans){ if(ans) goPage(4); else showPopup("เค้าให้โอกาสเธอตอบใหม่เค้าเสียใจนะเว้ย"); }
 </script>
 
 </body>
