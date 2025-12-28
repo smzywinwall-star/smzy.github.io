@@ -40,21 +40,12 @@ body{
     align-items:center;
     opacity:0;
     transform:translateX(50px);
-    transition:all .5s ease;
+    transition:all .6s ease;
     pointer-events:none;
     padding:20px;
-    visibility: hidden;
 }
-.section.active{ 
-    opacity:1; 
-    transform:translateX(0); 
-    pointer-events:auto; 
-    visibility: visible;
-}
-.section.exit{ 
-    opacity:0; 
-    transform:translateX(-50px); 
-}
+.section.active{ opacity:1; transform:translateX(0); pointer-events:auto; }
+.section.exit{ opacity:0; transform:translateX(-50px); }
 
 /* --- POPUP --- */
 .popup {
@@ -68,6 +59,7 @@ body{
     pointer-events: none;
     transition: background 0.4s ease;
     backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
 }
 .popup.active {
     background: rgba(0, 0, 0, 0.5);
@@ -113,10 +105,11 @@ body{
     background:linear-gradient(135deg,#4da3ff,#6fd0ff); 
     cursor:pointer; 
     margin-top: 15px;
+    box-shadow: 0 4px 15px rgba(77, 163, 255, 0.4);
 }
 
 /* --- หน้า 1 --- */
-.gift{ width: 70%; max-width: 250px; animation:float 2s infinite ease-in-out; }
+.gift{ width: 85%; max-width: 350px; animation:float 2s infinite ease-in-out; }
 @keyframes float{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-15px);} }
 
 /* --- หน้า 2 --- */
@@ -124,11 +117,17 @@ body{
 .code-box span{ width:40px; height:50px; border:2px solid #b3d9ff; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:24px; color:#4da3ff; background: #fff; }
 #hiddenInput{ position:absolute; opacity:0; pointer-events: none; }
 
+/* --- หน้า 3 --- */
+.answer-btns{ display:flex; gap:30px; }
+.icon-btn{ width:65px; height:65px; border-radius:50%; border:none; font-size:30px; color:#fff; cursor:pointer; }
+.yes{background:linear-gradient(135deg, #4CAF50, #81c784);}
+.no{background:linear-gradient(135deg, #F44336, #e57373);}
+
 /* --- หน้า 4 --- */
 .final-img{ width:70%; max-width:240px; border-radius:25px; margin-bottom:15px; opacity:0; transform:scale(0.5); transition:1s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 .play-anim { opacity: 1 !important; transform: scale(1) !important; }
 
-/* --- หน้า 5: Timer --- */
+/* --- หน้า 5: Relationship Timer --- */
 .couple-img{ width:180px; height:180px; border-radius:50%; object-fit:cover; border: 5px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 10px; }
 .timer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; }
 .timer-item { background: #f0f7ff; padding: 10px; border-radius: 15px; border: 1px solid #d0e7ff; }
@@ -168,9 +167,9 @@ body{
     <div class="box">
         <img src="Sad Dog GIF.gif" style="width:150px; border-radius:20px;">
         <h2>เค้ารักเธอมากๆเลยนะ<br>เธอรักเหมือนที่เค้ารักมั้ย</h2>
-        <div class="answer-btns" style="display:flex; gap:30px;">
-            <button class="icon-btn yes" style="width:65px; height:65px; border-radius:50%; border:none; font-size:30px; color:#fff; background:linear-gradient(135deg, #4CAF50, #81c784); cursor:pointer;" onclick="love(true)">✔</button>
-            <button class="icon-btn no" style="width:65px; height:65px; border-radius:50%; border:none; font-size:30px; color:#fff; background:linear-gradient(135deg, #F44336, #e57373); cursor:pointer;" onclick="love(false)">✖</button>
+        <div class="answer-btns">
+            <button class="icon-btn yes" onclick="love(true)">✔</button>
+            <button class="icon-btn no" onclick="love(false)">✖</button>
         </div>
     </div>
 </div>
@@ -192,6 +191,7 @@ body{
     <div class="box">
         <h2 style="color: #4da3ff; font-size: 22px;">เราคบกันมาแล้ว</h2>
         <img src="S__7938059.jpg" class="couple-img"> 
+        
         <div class="timer-grid">
             <div class="timer-item"><span id="days" class="timer-num">0</span><span class="timer-label">วัน</span></div>
             <div class="timer-item"><span id="hours" class="timer-num">0</span><span class="timer-label">ชั่วโมง</span></div>
@@ -211,59 +211,46 @@ body{
 
 <script>
 /* --- ตั้งค่าเพลง --- */
-const startTime = 200; 
-const endTime = 294;   
-const audio = document.getElementById('bgMusic');
+const startTime = 200; // เริ่มที่วินาทีที่ 10
+const endTime = 294;   // วนลูปที่วินาทีที่ 45
 
-/* --- ระบบจัดการหน้า (แก้ปัญหา Back Button) --- */
-let currentPage = 1;
-history.replaceState({page: 1}, "", "");
+history.replaceState({page:1},'', '');
 
-function goPage(n) {
-    if(n === currentPage) return;
-    currentPage = n;
-    history.pushState({page: n}, "", "");
-    renderPage(n);
+function goPage(n){
+    history.pushState({page:n},'', '');
+    showPage(n);
 }
 
-window.onpopstate = function(event) {
-    if (event.state && event.state.page) {
-        currentPage = event.state.page;
-        renderPage(currentPage);
-    }
-};
+function showPage(n){
+    const current = document.querySelector('.section.active');
+    const next = document.getElementById('page'+n);
 
-function renderPage(n) {
-    document.querySelectorAll('.section').forEach(sec => {
-        sec.classList.remove('active', 'exit');
-    });
-
-    const targetPage = document.getElementById('page' + n);
-    targetPage.classList.add('active');
-
-    // ล้างรหัสถ้ากลับมาหน้า 2
-    if(n === 2) {
-        input.value = "";
-        boxes.forEach(b => b.textContent = "");
-    }
-
-    if(n === 4) {
-        document.getElementById('finalImg').classList.add('play-anim');
-        document.getElementById('finalText').classList.add('play-anim');
-        playMusicWithFade(); 
-        createHeartRain();
-    }
-
-    if(n === 5) {
-        startTimer();
+    if(current){
+        current.classList.add('exit');
+        setTimeout(()=>{
+            current.classList.remove('active','exit');
+            next.classList.add('active');
+            
+            if(n === 4) {
+                document.getElementById('finalImg').classList.add('play-anim');
+                document.getElementById('finalText').classList.add('play-anim');
+                playMusicWithFade(); 
+                createHeartRain();
+            }
+            if(n === 5) {
+                startTimer();
+            }
+        },600);
+    }else{
+        next.classList.add('active');
     }
 }
 
-/* --- เพลง --- */
 function playMusicWithFade() {
+    const audio = document.getElementById('bgMusic');
     audio.currentTime = startTime; 
     audio.volume = 0;
-    audio.play().catch(() => console.log("ต้องการการโต้ตอบจากผู้ใช้"));
+    audio.play();
 
     let vol = 0;
     const fadeInterval = setInterval(() => {
@@ -300,13 +287,18 @@ input.addEventListener('input',()=>{
 });
 
 function focusInput(){ input.focus(); }
+
 function showPopup(text){
     document.getElementById('popupText').innerText = text;
     document.getElementById('popup').classList.add('active');
     input.value = "";
     boxes.forEach(b => b.textContent = "");
+    input.blur();
 }
-function closePopup(){ document.getElementById('popup').classList.remove('active'); }
+
+function closePopup(){
+    document.getElementById('popup').classList.remove('active');
+}
 
 function love(ans){
     if(ans) goPage(4);
@@ -314,15 +306,14 @@ function love(ans){
 }
 
 /* --- ระบบนับเวลาคบกัน --- */
-let timerInterval;
 function startTimer() {
-    if(timerInterval) clearInterval(timerInterval);
     const startDate = new Date("2025-07-18T11:09:00").getTime();
     
-    timerInterval = setInterval(() => {
+    setInterval(() => {
         const now = new Date().getTime();
         const diff = now - startDate;
-        if (diff < 0) return;
+
+        if (diff < 0) return; // ป้องกันกรณีที่ยังไม่ถึงวันที่กำหนด
 
         const d = Math.floor(diff / (1000 * 60 * 60 * 24));
         const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
