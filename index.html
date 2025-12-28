@@ -210,18 +210,22 @@ body{
 </div>
 
 <script>
-/* --- ตั้งค่าเพลง --- */
-const startTime = 200; // เริ่มที่วินาทีที่ 10
-const endTime = 294;   // วนลูปที่วินาทีที่ 45
+const startTime = 200; 
+const endTime = 294;   
 
 history.replaceState({page:1},'', '');
 
+// เพิ่ม Event listener สำหรับการกดย้อนกลับ
+window.addEventListener('popstate', (e) => {
+    if(e.state && e.state.page) showPage(e.state.page, false);
+});
+
 function goPage(n){
     history.pushState({page:n},'', '');
-    showPage(n);
+    showPage(n, true);
 }
 
-function showPage(n){
+function showPage(n, isForward){
     const current = document.querySelector('.section.active');
     const next = document.getElementById('page'+n);
 
@@ -248,6 +252,10 @@ function showPage(n){
 
 function playMusicWithFade() {
     const audio = document.getElementById('bgMusic');
+    
+    // ตรวจสอบว่าเพลงเล่นอยู่แล้วหรือไม่ ถ้าเล่นอยู่แล้วไม่ต้องทำอะไรต่อ
+    if (!audio.paused && audio.currentTime > 0) return;
+
     audio.currentTime = startTime; 
     audio.volume = 0;
     audio.play();
@@ -312,8 +320,7 @@ function startTimer() {
     setInterval(() => {
         const now = new Date().getTime();
         const diff = now - startDate;
-
-        if (diff < 0) return; // ป้องกันกรณีที่ยังไม่ถึงวันที่กำหนด
+        if (diff < 0) return;
 
         const d = Math.floor(diff / (1000 * 60 * 60 * 24));
         const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
