@@ -6,8 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <style>
-/* ... (ส่วนฟอนต์และสไตล์เดิมที่คุณมีอยู่) ... */
-
+/* --- ส่วนฟอนต์และสไตล์พื้นฐาน --- */
 @font-face{
     font-family:'MyFont';
     src:url('Demordlaimuekean-Regular.ttf') format('truetype');
@@ -31,7 +30,7 @@ body{
     width: 100vw;
 }
 
-/* ส่วน Section เดิม */
+/* --- การตั้งค่า Section --- */
 .section{
     position:absolute;
     inset:0;
@@ -48,28 +47,25 @@ body{
 .section.active{ opacity:1; transform:translateX(0); pointer-events:auto; }
 .section.exit{ opacity:0; transform:translateX(-50px); }
 
-/* ---------- ส่วน POPUP ใหม่ (เพิ่ม Animation ตรงนี้) ---------- */
+/* --- POPUP --- */
 .popup {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0); /* เริ่มต้นโปร่งใส */
+    background: rgba(0, 0, 0, 0);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 999;
     pointer-events: none;
-    transition: background 0.4s ease; /* พื้นหลังค่อยๆ ดำ */
+    transition: background 0.4s ease;
     backdrop-filter: blur(0px);
     -webkit-backdrop-filter: blur(0px);
 }
-
 .popup.active {
     background: rgba(0, 0, 0, 0.5);
     pointer-events: auto;
     backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
 }
-
 .popup-box {
     background: #fff;
     padding: 30px 25px;
@@ -79,64 +75,66 @@ body{
     width: 85%;
     max-width: 300px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-    
-    /* Animation ตอนเด้ง */
-    transform: scale(0.5); /* เริ่มจากเล็ก */
+    transform: scale(0.5);
     opacity: 0;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* ความเด้งแบบ iPhone */
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.popup.active .popup-box { transform: scale(1); opacity: 1; }
+.close { position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer; color: #ccc; }
+
+/* --- องค์ประกอบภายในหน้า --- */
+.box{ 
+    background:rgba(255, 255, 255, 0.9); 
+    padding:25px 20px; 
+    border-radius:25px; 
+    text-align:center; 
+    width:90%; 
+    max-width:340px; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    gap: 15px; 
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1); 
+}
+.open-btn, .next-btn{ 
+    padding:12px 35px; 
+    border:none; 
+    border-radius:50px; 
+    font-size:18px; 
+    color:#fff; 
+    background:linear-gradient(135deg,#4da3ff,#6fd0ff); 
+    cursor:pointer; 
+    margin-top: 15px;
+    box-shadow: 0 4px 15px rgba(77, 163, 255, 0.4);
 }
 
-.popup.active .popup-box {
-    transform: scale(1); /* ขยายมาขนาดปกติ */
-    opacity: 1;
-}
-
-.popup-box h3 {
-    font-size: 18px;
-    color: #444;
-    line-height: 1.5;
-    margin-top: 10px;
-}
-
-.close {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 24px;
-    cursor: pointer;
-    color: #ccc;
-    padding: 5px;
-    transition: color 0.2s;
-}
-.close:hover { color: #f44336; }
-
-/* ... (สไตล์หน้า 1, 2, 3, 4 ที่เหลือเหมือนเดิมจากเวอร์ชันก่อนหน้า) ... */
-/* หน้า 1 */
-#page1{ gap: 30px; }
-.gift{ width: 70%; max-width: 280px; animation:float 2s infinite ease-in-out; }
+/* --- หน้า 1 --- */
+.gift{ width: 70%; max-width: 250px; animation:float 2s infinite ease-in-out; }
 @keyframes float{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-15px);} }
-.open-btn{ padding:14px 40px; border:none; border-radius:50px; font-size:20px; color:#fff; background:linear-gradient(135deg,#4da3ff,#6fd0ff); cursor:pointer; }
 
-/* หน้า 2 */
-.pass-img{ width:60%; max-width:220px; border-radius:30px; margin-bottom: 20px;}
-.box{ background:rgba(255, 255, 255, 0.95); padding:25px 20px; border-radius:25px; text-align:center; width:90%; max-width:340px; display: flex; flex-direction: column; align-items: center; gap: 15px; }
+/* --- หน้า 2 --- */
 .code-box{ display:flex; gap:8px; justify-content:center; cursor: pointer; }
 .code-box span{ width:40px; height:50px; border:2px solid #b3d9ff; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:24px; color:#4da3ff; background: #fff; }
-#hiddenInput{ position:absolute; opacity:0; pointer-events: none; font-size: 16px; }
+#hiddenInput{ position:absolute; opacity:0; pointer-events: none; }
 
-/* หน้า 3 */
-.question-gif { width: 60%; max-width: 200px; border-radius: 20px; margin-bottom: 15px; }
-.answer-btns{ display:flex; gap:30px; justify-content:center; }
-.icon-btn{ width:65px; height:65px; border-radius:50%; border:none; font-size:30px; color:#fff; cursor:pointer; display: flex; justify-content: center; align-items: center; }
+/* --- หน้า 3 --- */
+.answer-btns{ display:flex; gap:30px; }
+.icon-btn{ width:65px; height:65px; border-radius:50%; border:none; font-size:30px; color:#fff; cursor:pointer; }
 .yes{background:linear-gradient(135deg, #4CAF50, #81c784);}
 .no{background:linear-gradient(135deg, #F44336, #e57373);}
 
-/* หน้า 4 */
-#page4 .box { background: transparent; padding: 0; width: 100%; text-align: center;}
-.final-img{ width:70%; max-width:260px; border-radius:30px; margin-bottom:20px; opacity: 0; transform: scale(0.5); transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);}
-.final-img.play-anim { opacity: 1; transform: scale(1); }
-#page4 h3 { font-size: 16px; line-height: 1.8; color: #2c3e50; font-weight: 600; text-shadow: 2px 2px 0px rgba(255, 255, 255, 0.8); opacity: 0; transform: translateY(20px); transition: all 1s ease 0.5s;}
-#page4 h3.play-anim { opacity: 1; transform: translateY(0); }
+/* --- หน้า 4 --- */
+.final-img{ width:70%; max-width:240px; border-radius:25px; margin-bottom:15px; opacity:0; transform:scale(0.5); transition:1s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.play-anim { opacity: 1 !important; transform: scale(1) !important; }
+
+/* --- หน้า 5: Relationship Timer --- */
+.couple-img{ width:180px; height:180px; border-radius:50%; object-fit:cover; border: 5px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 10px; }
+.timer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; }
+.timer-item { background: #f0f7ff; padding: 10px; border-radius: 15px; border: 1px solid #d0e7ff; }
+.timer-num { font-size: 24px; color: #4da3ff; display: block; font-weight: bold; }
+.timer-label { font-size: 14px; color: #777; }
+
+/* --- หัวใจโปรย --- */
 .heart-rain { position: fixed; top: -10vh; font-size: 20px; z-index: 1; animation: fall linear forwards; }
 @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
 </style>
@@ -144,13 +142,17 @@ body{
 
 <body>
 
+<audio id="bgMusic" loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
+
 <div class="section active" id="page1">
     <img src="gift.jpg.png" class="gift">
     <button class="open-btn" onclick="goPage(2)">เปิดสิเธอ</button>
 </div>
 
 <div class="section" id="page2">
-    <img src="photo1.png" class="pass-img">
+    <img src="photo1.png" style="width:60%; border-radius:20px; margin-bottom:15px;">
     <div class="box">
         <h3>ใส่ให้ถูกนะเธอลองเดาว่ารหัสอะไร</h3>
         <div class="code-box" id="code" onclick="focusInput()">
@@ -163,7 +165,7 @@ body{
 
 <div class="section" id="page3">
     <div class="box">
-        <img src="Sad Dog GIF.gif" class="question-gif">
+        <img src="Sad Dog GIF.gif" style="width:150px; border-radius:20px;">
         <h2>เค้ารักเธอมากๆเลยนะ<br>เธอรักเหมือนที่เค้ารักมั้ย</h2>
         <div class="answer-btns">
             <button class="icon-btn yes" onclick="love(true)">✔</button>
@@ -174,13 +176,29 @@ body{
 
 <div class="section" id="page4">
     <div class="box">
-        <img src="photo2.png" class="final-img">
-        <h3>Happy New year นะคะเธอ<br>
-        ขอบคุณที่เกิดมาให้เค้ารัก เค้าดีใจมากๆที่ได้มาเจอเธอ<br>
-        เค้าหวังว่าเค้าจะได้อยู่กับเธอไปนานๆไม่จากกันไปไหน<br>
-        เค้าจะตั้งใจรักเธอมากๆ รักที่สุดเลย อยู่ด้วยกันนานๆนะ<br>
-        รักมากขึ้นทุกวัน ขอให้ปีใหม่นี้เป็นปีที่ดีของเรา
+        <img src="photo2.png" class="final-img" id="finalImg">
+        <h3 id="finalText" style="opacity:0; transform:translateY(20px); transition:1s ease 0.5s;">
+            Happy New year นะคะเธอ<br>
+            ขอบคุณที่เกิดมาให้เค้ารัก ดีใจที่ได้เจอเธอ<br>
+            เค้าจะตั้งใจรักเธอมากๆ รักที่สุดเลย<br>
+            อยู่ด้วยกันนานๆนะ รักมากขึ้นทุกวัน
         </h3>
+        <button class="next-btn" onclick="goPage(5)">ดูเวลาของพวกเรากัน</button>
+    </div>
+</div>
+
+<div class="section" id="page5">
+    <div class="box">
+        <h2 style="color: #4da3ff; font-size: 22px;">เราคบกันมาแล้ว</h2>
+        <img src="couple.png" class="couple-img"> 
+        
+        <div class="timer-grid">
+            <div class="timer-item"><span id="days" class="timer-num">0</span><span class="timer-label">วัน</span></div>
+            <div class="timer-item"><span id="hours" class="timer-num">0</span><span class="timer-label">ชั่วโมง</span></div>
+            <div class="timer-item"><span id="mins" class="timer-num">0</span><span class="timer-label">นาที</span></div>
+            <div class="timer-item"><span id="secs" class="timer-num">0</span><span class="timer-label">วินาที</span></div>
+        </div>
+        <p style="margin-top:10px; color:#888; font-size: 14px;">ตั้งแต่วันที่ 18 กรกฎาคม 2025 | 11:09</p>
     </div>
 </div>
 
@@ -192,7 +210,10 @@ body{
 </div>
 
 <script>
-// Logic เดิมที่คุณใช้อยู่
+/* --- ตั้งค่าเพลง --- */
+const startTime = 200; // เริ่มที่วินาทีที่ 10
+const endTime = 294;   // วนลูปที่วินาทีที่ 45
+
 history.replaceState({page:1},'', '');
 
 function goPage(n){
@@ -209,10 +230,15 @@ function showPage(n){
         setTimeout(()=>{
             current.classList.remove('active','exit');
             next.classList.add('active');
+            
             if(n === 4) {
-                document.querySelector('#page4 .final-img').classList.add('play-anim');
-                document.querySelector('#page4 h3').classList.add('play-anim');
+                document.getElementById('finalImg').classList.add('play-anim');
+                document.getElementById('finalText').classList.add('play-anim');
+                playMusicWithFade(); 
                 createHeartRain();
+            }
+            if(n === 5) {
+                startTimer();
             }
         },600);
     }else{
@@ -220,9 +246,30 @@ function showPage(n){
     }
 }
 
-window.onpopstate=e=>{ showPage(e.state?.page||1); };
+function playMusicWithFade() {
+    const audio = document.getElementById('bgMusic');
+    audio.currentTime = startTime; 
+    audio.volume = 0;
+    audio.play();
 
-/* รหัส */
+    let vol = 0;
+    const fadeInterval = setInterval(() => {
+        if (vol < 0.6) {
+            vol += 0.05;
+            audio.volume = vol;
+        } else {
+            clearInterval(fadeInterval);
+        }
+    }, 200);
+
+    audio.ontimeupdate = function() {
+        if (audio.currentTime >= endTime) {
+            audio.currentTime = startTime; 
+        }
+    };
+}
+
+/* --- ระบบรหัสผ่าน --- */
 const password="180725";
 const input=document.getElementById('hiddenInput');
 const boxes=document.querySelectorAll('#code span');
@@ -241,7 +288,6 @@ input.addEventListener('input',()=>{
 
 function focusInput(){ input.focus(); }
 
-/* แก้ไขฟังก์ชัน Popup ให้รองรับ Animation */
 function showPopup(text){
     document.getElementById('popupText').innerText = text;
     document.getElementById('popup').classList.add('active');
@@ -254,13 +300,33 @@ function closePopup(){
     document.getElementById('popup').classList.remove('active');
 }
 
-/* คำถาม */
 function love(ans){
     if(ans) goPage(4);
-    else showPopup("เค้าให้โอกาสเธอตอบใหม่เค้าเสียใจนะเว้ย");
+    else showPopup("เค้าให้โอกาสเธอตอบใหม่นะ เค้าน้อยใจนะเนี่ย!");
 }
 
-/* หัวใจโปรย */
+/* --- ระบบนับเวลาคบกัน --- */
+function startTimer() {
+    const startDate = new Date("2025-07-18T11:09:00").getTime();
+    
+    setInterval(() => {
+        const now = new Date().getTime();
+        const diff = now - startDate;
+
+        if (diff < 0) return; // ป้องกันกรณีที่ยังไม่ถึงวันที่กำหนด
+
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+        document.getElementById('days').innerText = d;
+        document.getElementById('hours').innerText = h;
+        document.getElementById('mins').innerText = m;
+        document.getElementById('secs').innerText = s;
+    }, 1000);
+}
+
 function createHeartRain() {
     const colors = ['#ff4d6d', '#ff758f', '#ff8fa3'];
     for(let i=0; i<30; i++) {
