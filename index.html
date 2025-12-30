@@ -95,6 +95,8 @@ body{
     align-items: center; 
     gap: 15px; 
     box-shadow: 0 10px 20px rgba(0,0,0,0.1); 
+    /* เพิ่มเพื่อให้ปุ่มขยายเกินกล่องได้ */
+    overflow: visible; 
 }
 .open-btn, .next-btn{ 
     padding:12px 35px; 
@@ -118,10 +120,22 @@ body{
 #hiddenInput{ position:absolute; opacity:0; pointer-events: none; }
 
 /* --- หน้า 3 --- */
-.answer-btns{ display:flex; gap:30px; }
-.icon-btn{ width:65px; height:65px; border-radius:50%; border:none; font-size:30px; color:#fff; cursor:pointer; }
+.answer-btns{ display:flex; gap:30px; justify-content: center; align-items: center; }
+.icon-btn{ 
+    width:65px; height:65px; 
+    border-radius:50%; border:none; 
+    font-size:30px; color:#fff; cursor:pointer; 
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* เพิ่ม Transition ให้ขยายสมูท */
+}
 .yes{background:linear-gradient(135deg, #4CAF50, #81c784);}
 .no{background:linear-gradient(135deg, #F44336, #e57373);}
+
+/* รูป GIF หน้า 3 */
+#sadGif {
+    width:150px; 
+    border-radius:20px;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* เพิ่ม Transition */
+}
 
 /* --- หน้า 4 --- */
 .final-img{ width:70%; max-width:240px; border-radius:25px; margin-bottom:15px; opacity:0; transform:scale(0.5); transition:1s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
@@ -165,11 +179,11 @@ body{
 
 <div class="section" id="page3">
     <div class="box">
-        <img src="Sad Dog GIF.gif" style="width:150px; border-radius:20px;">
+        <img id="sadGif" src="Sad Dog GIF.gif">
         <h2>เค้ารักเธอมากๆเลยนะ<br>เธอรักเหมือนที่เค้ารักมั้ย</h2>
         <div class="answer-btns">
-            <button class="icon-btn yes" onclick="love(true)">✔</button>
-            <button class="icon-btn no" onclick="love(false)">✖</button>
+            <button id="yesBtn" class="icon-btn yes" onclick="love(true)">✔</button>
+            <button id="noBtn" class="icon-btn no" onclick="love(false)">✖</button>
         </div>
     </div>
 </div>
@@ -215,7 +229,6 @@ const endTime = 294;
 
 history.replaceState({page:1},'', '');
 
-// เพิ่ม Event listener สำหรับการกดย้อนกลับ
 window.addEventListener('popstate', (e) => {
     if(e.state && e.state.page) showPage(e.state.page, false);
 });
@@ -252,8 +265,6 @@ function showPage(n, isForward){
 
 function playMusicWithFade() {
     const audio = document.getElementById('bgMusic');
-    
-    // ตรวจสอบว่าเพลงเล่นอยู่แล้วหรือไม่ ถ้าเล่นอยู่แล้วไม่ต้องทำอะไรต่อ
     if (!audio.paused && audio.currentTime > 0) return;
 
     audio.currentTime = startTime; 
@@ -308,13 +319,43 @@ function closePopup(){
     document.getElementById('popup').classList.remove('active');
 }
 
+/* --- LOGIC ใหม่: ปุ่มขยาย/หด --- */
+let clickCount = 0;
+
 function love(ans){
-    if(ans) goPage(4);
-    else showPopup("เค้าให้โอกาสเธอตอบใหม่นะ เค้าน้อยใจนะเนี่ย!");
+    if(ans) {
+        // ถ้าตอบ ใช่ ให้ไปหน้าต่อไป
+        goPage(4);
+    } else {
+        // ถ้าตอบ ไม่
+        clickCount++;
+
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const gif = document.getElementById('sadGif');
+
+        // 1. ขยายปุ่ม Yes และ รูป GIF
+        // เพิ่มขนาดทีละ 0.4 เท่า ทุกครั้งที่กดผิด
+        let scaleSize = 1 + (clickCount * 0.4); 
+        yesBtn.style.transform = `scale(${scaleSize})`;
+        gif.style.transform = `scale(${scaleSize})`;
+
+        // 2. ย่อปุ่ม No
+        // ลดขนาดลงทีละ 0.2 เท่า
+        let noScale = 1 - (clickCount * 0.2);
+        
+        if(noScale <= 0) {
+            // ถ้าเล็กจนติดลบหรือ 0 ให้ซ่อนไปเลย
+            noBtn.style.display = 'none';
+        } else {
+            noBtn.style.transform = `scale(${noScale})`;
+        }
+    }
 }
 
 /* --- ระบบนับเวลาคบกัน --- */
 function startTimer() {
+    // ระวัง: วันที่นี้เป็นปี 2025 ถ้าเปิดก่อนถึงวันเวลามันจะไม่ขึ้นนะครับ
     const startDate = new Date("2025-07-18T11:09:00").getTime();
     
     setInterval(() => {
