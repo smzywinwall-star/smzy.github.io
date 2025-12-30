@@ -6,7 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <style>
-/* --- ส่วนฟอนต์และสไตล์พื้นฐาน --- */
 @font-face{
     font-family:'MyFont';
     src:url('Demordlaimuekean-Regular.ttf') format('truetype');
@@ -30,7 +29,6 @@ body{
     width: 100vw;
 }
 
-/* --- การตั้งค่า Section --- */
 .section{
     position:absolute;
     inset:0;
@@ -47,7 +45,7 @@ body{
 .section.active{ opacity:1; transform:translateX(0); pointer-events:auto; }
 .section.exit{ opacity:0; transform:translateX(-50px); }
 
-/* --- POPUP --- */
+/* --- POPUP สำหรับรหัสผ่านผิด --- */
 .popup {
     position: fixed;
     inset: 0;
@@ -57,9 +55,7 @@ body{
     align-items: center;
     z-index: 999;
     pointer-events: none;
-    transition: background 0.4s ease;
-    backdrop-filter: blur(0px);
-    -webkit-backdrop-filter: blur(0px);
+    transition: all 0.4s ease;
 }
 .popup.active {
     background: rgba(0, 0, 0, 0.5);
@@ -70,19 +66,15 @@ body{
     background: #fff;
     padding: 30px 25px;
     border-radius: 25px;
-    position: relative;
     text-align: center;
     width: 85%;
     max-width: 300px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
     transform: scale(0.5);
     opacity: 0;
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 .popup.active .popup-box { transform: scale(1); opacity: 1; }
-.close { position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer; color: #ccc; }
 
-/* --- องค์ประกอบภายในหน้า --- */
 .box{ 
     background:rgba(255, 255, 255, 0.9); 
     padding:25px 20px; 
@@ -94,10 +86,47 @@ body{
     flex-direction: column; 
     align-items: center; 
     gap: 15px; 
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1); 
-    /* เพิ่มเพื่อให้ปุ่มขยายเกินกล่องได้ */
-    overflow: visible; 
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    transition: all 0.4s ease; /* เพื่อให้กล่องขยายตามเนื้อหาข้างใน */
 }
+
+/* --- หน้า 3: หน้าคำถามรักมั้ย --- */
+#page3 .box {
+    max-height: 80vh; /* ป้องกันไม่ให้ทะลุจอ iPhone */
+    overflow-y: auto;
+}
+#sadGif {
+    width: 120px;
+    border-radius: 20px;
+    transition: all 0.4s ease;
+    flex-shrink: 0;
+}
+.answer-btns {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    width: 100%;
+}
+.icon-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    font-size: 24px;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.yes { background: linear-gradient(135deg, #4CAF50, #81c784); }
+.no { background: linear-gradient(135deg, #F44336, #e57373); }
+
+/* --- ส่วนอื่นๆ --- */
 .open-btn, .next-btn{ 
     padding:12px 35px; 
     border:none; 
@@ -107,48 +136,18 @@ body{
     background:linear-gradient(135deg,#4da3ff,#6fd0ff); 
     cursor:pointer; 
     margin-top: 15px;
-    box-shadow: 0 4px 15px rgba(77, 163, 255, 0.4);
 }
-
-/* --- หน้า 1 --- */
-.gift{ width: 85%; max-width: 350px; animation:float 2s infinite ease-in-out; }
-@keyframes float{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-15px);} }
-
-/* --- หน้า 2 --- */
-.code-box{ display:flex; gap:8px; justify-content:center; cursor: pointer; }
+.code-box{ display:flex; gap:8px; justify-content:center; }
 .code-box span{ width:40px; height:50px; border:2px solid #b3d9ff; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:24px; color:#4da3ff; background: #fff; }
 #hiddenInput{ position:absolute; opacity:0; pointer-events: none; }
 
-/* --- หน้า 3 --- */
-.answer-btns{ display:flex; gap:30px; justify-content: center; align-items: center; }
-.icon-btn{ 
-    width:65px; height:65px; 
-    border-radius:50%; border:none; 
-    font-size:30px; color:#fff; cursor:pointer; 
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* เพิ่ม Transition ให้ขยายสมูท */
-}
-.yes{background:linear-gradient(135deg, #4CAF50, #81c784);}
-.no{background:linear-gradient(135deg, #F44336, #e57373);}
-
-/* รูป GIF หน้า 3 */
-#sadGif {
-    width:150px; 
-    border-radius:20px;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* เพิ่ม Transition */
-}
-
-/* --- หน้า 4 --- */
-.final-img{ width:70%; max-width:240px; border-radius:25px; margin-bottom:15px; opacity:0; transform:scale(0.5); transition:1s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.final-img{ width:70%; max-width:240px; border-radius:25px; opacity:0; transform:scale(0.5); transition:1s ease; }
 .play-anim { opacity: 1 !important; transform: scale(1) !important; }
 
-/* --- หน้า 5: Relationship Timer --- */
-.couple-img{ width:180px; height:180px; border-radius:50%; object-fit:cover; border: 5px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 10px; }
 .timer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; }
 .timer-item { background: #f0f7ff; padding: 10px; border-radius: 15px; border: 1px solid #d0e7ff; }
-.timer-num { font-size: 24px; color: #4da3ff; display: block; font-weight: bold; }
-.timer-label { font-size: 14px; color: #777; }
+.timer-num { font-size: 24px; color: #4da3ff; font-weight: bold; }
 
-/* --- หัวใจโปรย --- */
 .heart-rain { position: fixed; top: -10vh; font-size: 20px; z-index: 1; animation: fall linear forwards; }
 @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
 </style>
@@ -161,15 +160,15 @@ body{
 </audio>
 
 <div class="section active" id="page1">
-    <img src="gift.jpg.png" class="gift">
+    <img src="gift.jpg.png" style="width: 80%; max-width: 300px;">
     <button class="open-btn" onclick="goPage(2)">เปิดสิเธอ</button>
 </div>
 
 <div class="section" id="page2">
-    <img src="photo1.png" style="width:60%; border-radius:20px; margin-bottom:15px;">
     <div class="box">
+        <img src="photo1.png" style="width:100px; border-radius:15px;">
         <h3>ใส่ให้ถูกนะเธอลองเดาว่ารหัสอะไร</h3>
-        <div class="code-box" id="code" onclick="focusInput()">
+        <div class="code-box" onclick="document.getElementById('hiddenInput').focus()">
             <span></span><span></span><span></span>
             <span></span><span></span><span></span>
         </div>
@@ -180,7 +179,7 @@ body{
 <div class="section" id="page3">
     <div class="box">
         <img id="sadGif" src="Sad Dog GIF.gif">
-        <h2>เค้ารักเธอมากๆเลยนะ<br>เธอรักเหมือนที่เค้ารักมั้ย</h2>
+        <h2 id="questionText">เค้ารักเธอมากๆเลยนะ<br>เธอรักเหมือนที่เค้ารักมั้ย</h2>
         <div class="answer-btns">
             <button id="yesBtn" class="icon-btn yes" onclick="love(true)">✔</button>
             <button id="noBtn" class="icon-btn no" onclick="love(false)">✖</button>
@@ -191,7 +190,7 @@ body{
 <div class="section" id="page4">
     <div class="box">
         <img src="photo2.png" class="final-img" id="finalImg">
-        <h3 id="finalText" style="opacity:0; transform:translateY(20px); transition:1s ease 0.5s;">
+        <h3 id="finalText" style="opacity:0; transition:1s ease 0.5s;">
             Happy New year นะคะเธอ<br>
             ขอบคุณที่เกิดมาให้เค้ารัก ดีใจที่ได้เจอเธอ<br>
             เค้าจะตั้งใจรักเธอมากๆ รักที่สุดเลย<br>
@@ -204,193 +203,132 @@ body{
 <div class="section" id="page5">
     <div class="box">
         <h2 style="color: #4da3ff; font-size: 22px;">เราคบกันมาแล้ว</h2>
-        <img src="S__7938059.jpg" class="couple-img"> 
-        
+        <img src="S__7938059.jpg" style="width:150px; height:150px; border-radius:50%; object-fit:cover; border:4px solid #fff;"> 
         <div class="timer-grid">
-            <div class="timer-item"><span id="days" class="timer-num">0</span><span class="timer-label">วัน</span></div>
-            <div class="timer-item"><span id="hours" class="timer-num">0</span><span class="timer-label">ชั่วโมง</span></div>
-            <div class="timer-item"><span id="mins" class="timer-num">0</span><span class="timer-label">นาที</span></div>
-            <div class="timer-item"><span id="secs" class="timer-num">0</span><span class="timer-label">วินาที</span></div>
+            <div class="timer-item"><span id="days" class="timer-num">0</span><br><small>วัน</small></div>
+            <div class="timer-item"><span id="hours" class="timer-num">0</span><br><small>ชม.</small></div>
+            <div class="timer-item"><span id="mins" class="timer-num">0</span><br><small>นาที</small></div>
+            <div class="timer-item"><span id="secs" class="timer-num">0</span><br><small>วิ</small></div>
         </div>
-        <p style="margin-top:10px; color:#888; font-size: 14px;">ตั้งแต่วันที่ 18 กรกฎาคม 2025 | 11:09</p>
+        <p style="color:#888; font-size: 12px;">ตั้งแต่วันที่ 18 กรกฎาคม 2025</p>
     </div>
 </div>
 
 <div class="popup" id="popup">
     <div class="popup-box">
-        <div class="close" onclick="closePopup()">✕</div>
         <h3 id="popupText"></h3>
+        <button class="next-btn" onclick="closePopup()">ลองใหม่</button>
     </div>
 </div>
 
 <script>
 const startTime = 200; 
-const endTime = 294;   
-
-history.replaceState({page:1},'', '');
-
-window.addEventListener('popstate', (e) => {
-    if(e.state && e.state.page) showPage(e.state.page, false);
-});
+const endTime = 294;
 
 function goPage(n){
-    history.pushState({page:n},'', '');
-    showPage(n, true);
-}
-
-function showPage(n, isForward){
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active', 'exit'));
     const current = document.querySelector('.section.active');
     const next = document.getElementById('page'+n);
-
-    if(current){
-        current.classList.add('exit');
-        setTimeout(()=>{
-            current.classList.remove('active','exit');
-            next.classList.add('active');
-            
-            if(n === 4) {
-                document.getElementById('finalImg').classList.add('play-anim');
-                document.getElementById('finalText').classList.add('play-anim');
-                playMusicWithFade(); 
-                createHeartRain();
-            }
-            if(n === 5) {
-                startTimer();
-            }
-        },600);
-    }else{
+    
+    document.querySelector('.section.active')?.classList.add('exit');
+    setTimeout(() => {
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
         next.classList.add('active');
-    }
+        if(n === 4) {
+            document.getElementById('finalImg').classList.add('play-anim');
+            document.getElementById('finalText').style.opacity = "1";
+            playMusicWithFade(); 
+            createHeartRain();
+        }
+        if(n === 5) startTimer();
+    }, 300);
 }
 
 function playMusicWithFade() {
     const audio = document.getElementById('bgMusic');
-    if (!audio.paused && audio.currentTime > 0) return;
-
     audio.currentTime = startTime; 
-    audio.volume = 0;
+    audio.volume = 0.5;
     audio.play();
-
-    let vol = 0;
-    const fadeInterval = setInterval(() => {
-        if (vol < 0.6) {
-            vol += 0.05;
-            audio.volume = vol;
-        } else {
-            clearInterval(fadeInterval);
-        }
-    }, 200);
-
-    audio.ontimeupdate = function() {
-        if (audio.currentTime >= endTime) {
-            audio.currentTime = startTime; 
-        }
-    };
 }
 
 /* --- ระบบรหัสผ่าน --- */
 const password="180725";
 const input=document.getElementById('hiddenInput');
-const boxes=document.querySelectorAll('#code span');
+const boxes=document.querySelectorAll('.code-box span');
 
 input.addEventListener('input',()=>{
     let v=input.value;
     boxes.forEach((b,i)=>b.textContent=v[i]?"●":"");
     if(v.length===6){
-        if(v===password) {
-            input.blur(); 
-            setTimeout(() => goPage(3), 300);
-        }
-        else showPopup("ไม่ถูก เธอลองนึกดูดีๆวันสำคัญของเราอะ");
+        if(v===password) goPage(3);
+        else showPopup("รหัสไม่ถูกนะ นึกดูดีๆ");
     }
 });
-
-function focusInput(){ input.focus(); }
 
 function showPopup(text){
     document.getElementById('popupText').innerText = text;
     document.getElementById('popup').classList.add('active');
     input.value = "";
     boxes.forEach(b => b.textContent = "");
-    input.blur();
 }
+function closePopup(){ document.getElementById('popup').classList.remove('active'); }
 
-function closePopup(){
-    document.getElementById('popup').classList.remove('active');
-}
-
-/* --- LOGIC ใหม่: ปุ่มขยาย/หด --- */
+/* --- หน้า 3 Logic ขยายปุ่ม/รูป --- */
 let clickCount = 0;
-
 function love(ans){
     if(ans) {
-        // ถ้าตอบ ใช่ ให้ไปหน้าต่อไป
         goPage(4);
     } else {
-        // ถ้าตอบ ไม่
         clickCount++;
-
         const yesBtn = document.getElementById('yesBtn');
         const noBtn = document.getElementById('noBtn');
         const gif = document.getElementById('sadGif');
 
-        // 1. ขยายปุ่ม Yes และ รูป GIF
-        // เพิ่มขนาดทีละ 0.4 เท่า ทุกครั้งที่กดผิด
-        let scaleSize = 1 + (clickCount * 0.4); 
-        yesBtn.style.transform = `scale(${scaleSize})`;
-        gif.style.transform = `scale(${scaleSize})`;
+        // ขยายรูปและปุ่ม Yes (จำกัดไม่ให้ใหญ่เกินไปสำหรับ iPhone 11)
+        let scaleVal = 1 + (clickCount * 0.15); 
+        if(scaleVal > 1.8) scaleVal = 1.8; 
 
-        // 2. ย่อปุ่ม No
-        // ลดขนาดลงทีละ 0.2 เท่า
+        yesBtn.style.transform = `scale(${scaleVal})`;
+        gif.style.width = (120 + (clickCount * 20)) + "px"; // ขยายขนาดความกว้างแทน scale เพื่อให้ push เนื้อหาลงไป
+
+        // ย่อปุ่ม No
         let noScale = 1 - (clickCount * 0.2);
-        
-        if(noScale <= 0) {
-            // ถ้าเล็กจนติดลบหรือ 0 ให้ซ่อนไปเลย
-            noBtn.style.display = 'none';
+        if(noScale <= 0.2) {
+            noBtn.style.opacity = "0";
+            noBtn.style.pointerEvents = "none";
         } else {
             noBtn.style.transform = `scale(${noScale})`;
         }
     }
 }
 
-/* --- ระบบนับเวลาคบกัน --- */
 function startTimer() {
-    // ระวัง: วันที่นี้เป็นปี 2025 ถ้าเปิดก่อนถึงวันเวลามันจะไม่ขึ้นนะครับ
     const startDate = new Date("2025-07-18T11:09:00").getTime();
-    
     setInterval(() => {
         const now = new Date().getTime();
         const diff = now - startDate;
         if (diff < 0) return;
-
-        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const s = Math.floor((diff % (1000 * 60)) / 1000);
-
-        document.getElementById('days').innerText = d;
-        document.getElementById('hours').innerText = h;
-        document.getElementById('mins').innerText = m;
-        document.getElementById('secs').innerText = s;
+        document.getElementById('days').innerText = Math.floor(diff / 86400000);
+        document.getElementById('hours').innerText = Math.floor((diff % 86400000) / 3600000);
+        document.getElementById('mins').innerText = Math.floor((diff % 3600000) / 60000);
+        document.getElementById('secs').innerText = Math.floor((diff % 60000) / 1000);
     }, 1000);
 }
 
 function createHeartRain() {
-    const colors = ['#ff4d6d', '#ff758f', '#ff8fa3'];
-    for(let i=0; i<30; i++) {
+    for(let i=0; i<25; i++) {
         setTimeout(() => {
             const heart = document.createElement('div');
             heart.classList.add('heart-rain');
             heart.innerHTML = '❤';
             heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.color = '#ff4d6d';
             heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
-            heart.style.color = colors[Math.floor(Math.random() * colors.length)];
             document.body.appendChild(heart);
             setTimeout(() => heart.remove(), 4000);
-        }, i * 150);
+        }, i * 200);
     }
 }
 </script>
-
 </body>
 </html>
