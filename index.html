@@ -27,6 +27,9 @@ body{
     overflow:hidden;
     height: 100vh;
     width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .section{
@@ -45,43 +48,14 @@ body{
 .section.active{ opacity:1; transform:translateX(0); pointer-events:auto; }
 .section.exit{ opacity:0; transform:translateX(-50px); }
 
-/* --- POPUP --- */
-.popup {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-    pointer-events: none;
-    transition: all 0.4s ease;
-}
-.popup.active {
-    background: rgba(0, 0, 0, 0.5);
-    pointer-events: auto;
-    backdrop-filter: blur(5px);
-}
-.popup-box {
-    background: #fff;
-    padding: 30px 25px;
-    border-radius: 25px;
-    text-align: center;
-    width: 85%;
-    max-width: 300px;
-    transform: scale(0.5);
-    opacity: 0;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-.popup.active .popup-box { transform: scale(1); opacity: 1; }
-
+/* --- กล่องเนื้อหาหลัก --- */
 .box{ 
     background:rgba(255, 255, 255, 0.9); 
     padding:25px 20px; 
     border-radius:25px; 
     text-align:center; 
     width:90%; 
-    max-width:340px; 
+    max-width:340px; /* คุมขนาดกล่องไม่ให้ใหญ่เกินไปใน iPad */
     display: flex; 
     flex-direction: column; 
     align-items: center; 
@@ -90,9 +64,28 @@ body{
     transition: all 0.4s ease;
 }
 
+/* --- การปรับแต่งสำหรับ iPad/Tablet (หน้าจอที่กว้างกว่า 600px) --- */
+@media (min-width: 600px) {
+    .box {
+        max-width: 450px; /* ขยายกล่องนิดหน่อยให้เหมาะกับจอ iPad */
+        padding: 40px;
+    }
+    h2 { font-size: 28px; }
+    h3 { font-size: 24px; }
+}
+
+/* --- รูปหน้า 2 --- */
+.img-main {
+    width: 60%;
+    max-width: 250px; /* คุมไม่ให้ใหญ่เกินไปใน iPad */
+    border-radius: 20px;
+    margin-bottom: 15px;
+}
+
 /* --- หน้า 3: หน้าคำถาม --- */
 #sadGif {
-    width: 150px; /* ขนาดเริ่มต้น */
+    width: 150px;
+    max-width: 280px; /* ป้องกันรูปใหญ่จนแตกใน iPad */
     border-radius: 20px;
     transition: all 0.4s ease;
     flex-shrink: 0;
@@ -121,28 +114,34 @@ body{
 .yes { background: linear-gradient(135deg, #4CAF50, #81c784); }
 .no { background: linear-gradient(135deg, #F44336, #e57373); }
 
-/* --- ส่วนอื่นๆ --- */
-.open-btn, .next-btn{ 
-    padding:12px 35px; 
-    border:none; 
-    border-radius:50px; 
-    font-size:18px; 
-    color:#fff; 
-    background:linear-gradient(135deg,#4da3ff,#6fd0ff); 
-    cursor:pointer; 
-    margin-top: 15px;
-}
+/* --- รหัสผ่าน --- */
 .code-box{ display:flex; gap:8px; justify-content:center; }
 .code-box span{ width:40px; height:50px; border:2px solid #b3d9ff; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:24px; color:#4da3ff; background: #fff; }
 #hiddenInput{ position:absolute; opacity:0; pointer-events: none; }
 
-.final-img{ width:70%; max-width:240px; border-radius:25px; opacity:0; transform:scale(0.5); transition:1s ease; }
+/* --- หน้า 4-5 --- */
+.final-img { width:70%; max-width:240px; border-radius:25px; opacity:0; transform:scale(0.5); transition:1s ease; }
 .play-anim { opacity: 1 !important; transform: scale(1) !important; }
 
 .timer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; }
 .timer-item { background: #f0f7ff; padding: 10px; border-radius: 15px; border: 1px solid #d0e7ff; }
 .timer-num { font-size: 24px; color: #4da3ff; font-weight: bold; }
 
+.popup {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    pointer-events: none;
+    transition: all 0.4s ease;
+}
+.popup.active { background: rgba(0, 0, 0, 0.5); pointer-events: auto; backdrop-filter: blur(5px); }
+.popup-box { background: #fff; padding: 30px 25px; border-radius: 25px; text-align: center; width: 85%; max-width: 300px; transform: scale(0.5); opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.popup.active .popup-box { transform: scale(1); opacity: 1; }
+
+.open-btn, .next-btn{ padding:12px 35px; border:none; border-radius:50px; font-size:18px; color:#fff; background:linear-gradient(135deg,#4da3ff,#6fd0ff); cursor:pointer; margin-top: 15px; }
 .heart-rain { position: fixed; top: -10vh; font-size: 20px; z-index: 1; animation: fall linear forwards; }
 @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
 </style>
@@ -155,12 +154,12 @@ body{
 </audio>
 
 <div class="section active" id="page1">
-    <img src="gift.jpg.png" style="width: 85%; max-width: 350px;">
+    <img src="gift.jpg.png" style="width: 80%; max-width: 300px;">
     <button class="open-btn" onclick="goPage(2)">เปิดสิเธอ</button>
 </div>
 
 <div class="section" id="page2">
-    <img src="photo1.png" style="width:60%; border-radius:20px; margin-bottom:15px;">
+    <img src="photo1.png" class="img-main">
     <div class="box">
         <h3>ใส่ให้ถูกนะเธอลองเดาว่ารหัสอะไร</h3>
         <div class="code-box" onclick="document.getElementById('hiddenInput').focus()">
@@ -223,7 +222,6 @@ const endTime = 294;
 function goPage(n){
     const current = document.querySelector('.section.active');
     const next = document.getElementById('page'+n);
-    
     if(current) current.classList.add('exit');
     setTimeout(() => {
         if(current) current.classList.remove('active', 'exit');
@@ -266,7 +264,6 @@ function showPopup(text){
 }
 function closePopup(){ document.getElementById('popup').classList.remove('active'); }
 
-/* --- หน้า 3 Logic ขยายปุ่ม/รูป --- */
 let clickCount = 0;
 function love(ans){
     if(ans) {
@@ -277,14 +274,13 @@ function love(ans){
         const noBtn = document.getElementById('noBtn');
         const gif = document.getElementById('sadGif');
 
-        // ขยายรูปและปุ่ม Yes (ขยายความกว้างรูปเพื่อให้ดันข้อความลง)
         let scaleVal = 1 + (clickCount * 0.15); 
         if(scaleVal > 1.7) scaleVal = 1.7; 
 
         yesBtn.style.transform = `scale(${scaleVal})`;
-        gif.style.width = (150 + (clickCount * 25)) + "px"; 
+        // ปรับการขยายรูปให้สมดุลขึ้น
+        gif.style.width = (150 + (clickCount * 20)) + "px"; 
 
-        // ย่อปุ่ม No
         let noScale = 1 - (clickCount * 0.25);
         if(noScale <= 0.1) {
             noBtn.style.display = "none";
