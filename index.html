@@ -45,7 +45,7 @@ body{
 .section.active{ opacity:1; transform:translateX(0); pointer-events:auto; }
 .section.exit{ opacity:0; transform:translateX(-50px); }
 
-/* --- POPUP สำหรับรหัสผ่านผิด --- */
+/* --- POPUP --- */
 .popup {
     position: fixed;
     inset: 0;
@@ -87,16 +87,12 @@ body{
     align-items: center; 
     gap: 15px; 
     box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    transition: all 0.4s ease; /* เพื่อให้กล่องขยายตามเนื้อหาข้างใน */
+    transition: all 0.4s ease;
 }
 
-/* --- หน้า 3: หน้าคำถามรักมั้ย --- */
-#page3 .box {
-    max-height: 80vh; /* ป้องกันไม่ให้ทะลุจอ iPhone */
-    overflow-y: auto;
-}
+/* --- หน้า 3: หน้าคำถาม --- */
 #sadGif {
-    width: 120px;
+    width: 150px; /* ขนาดเริ่มต้น */
     border-radius: 20px;
     transition: all 0.4s ease;
     flex-shrink: 0;
@@ -106,15 +102,14 @@ body{
     gap: 20px;
     align-items: center;
     justify-content: center;
-    margin-top: 10px;
     width: 100%;
 }
 .icon-btn {
-    width: 60px;
-    height: 60px;
+    width: 65px;
+    height: 65px;
     border-radius: 50%;
     border: none;
-    font-size: 24px;
+    font-size: 28px;
     color: #fff;
     cursor: pointer;
     transition: all 0.4s ease;
@@ -160,13 +155,13 @@ body{
 </audio>
 
 <div class="section active" id="page1">
-    <img src="gift.jpg.png" style="width: 80%; max-width: 300px;">
+    <img src="gift.jpg.png" style="width: 85%; max-width: 350px;">
     <button class="open-btn" onclick="goPage(2)">เปิดสิเธอ</button>
 </div>
 
 <div class="section" id="page2">
+    <img src="photo1.png" style="width:60%; border-radius:20px; margin-bottom:15px;">
     <div class="box">
-        <img src="photo1.png" style="width:100px; border-radius:15px;">
         <h3>ใส่ให้ถูกนะเธอลองเดาว่ารหัสอะไร</h3>
         <div class="code-box" onclick="document.getElementById('hiddenInput').focus()">
             <span></span><span></span><span></span>
@@ -203,14 +198,14 @@ body{
 <div class="section" id="page5">
     <div class="box">
         <h2 style="color: #4da3ff; font-size: 22px;">เราคบกันมาแล้ว</h2>
-        <img src="S__7938059.jpg" style="width:150px; height:150px; border-radius:50%; object-fit:cover; border:4px solid #fff;"> 
+        <img src="S__7938059.jpg" style="width:160px; height:160px; border-radius:50%; object-fit:cover; border:5px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"> 
         <div class="timer-grid">
             <div class="timer-item"><span id="days" class="timer-num">0</span><br><small>วัน</small></div>
-            <div class="timer-item"><span id="hours" class="timer-num">0</span><br><small>ชม.</small></div>
+            <div class="timer-item"><span id="hours" class="timer-num">0</span><br><small>ชั่วโมง</small></div>
             <div class="timer-item"><span id="mins" class="timer-num">0</span><br><small>นาที</small></div>
-            <div class="timer-item"><span id="secs" class="timer-num">0</span><br><small>วิ</small></div>
+            <div class="timer-item"><span id="secs" class="timer-num">0</span><br><small>วินาที</small></div>
         </div>
-        <p style="color:#888; font-size: 12px;">ตั้งแต่วันที่ 18 กรกฎาคม 2025</p>
+        <p style="margin-top:10px; color:#888; font-size: 14px;">ตั้งแต่วันที่ 18 กรกฎาคม 2025 | 11:09</p>
     </div>
 </div>
 
@@ -226,13 +221,12 @@ const startTime = 200;
 const endTime = 294;
 
 function goPage(n){
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active', 'exit'));
     const current = document.querySelector('.section.active');
     const next = document.getElementById('page'+n);
     
-    document.querySelector('.section.active')?.classList.add('exit');
+    if(current) current.classList.add('exit');
     setTimeout(() => {
-        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        if(current) current.classList.remove('active', 'exit');
         next.classList.add('active');
         if(n === 4) {
             document.getElementById('finalImg').classList.add('play-anim');
@@ -241,17 +235,16 @@ function goPage(n){
             createHeartRain();
         }
         if(n === 5) startTimer();
-    }, 300);
+    }, 400);
 }
 
 function playMusicWithFade() {
     const audio = document.getElementById('bgMusic');
     audio.currentTime = startTime; 
-    audio.volume = 0.5;
+    audio.volume = 0.6;
     audio.play();
 }
 
-/* --- ระบบรหัสผ่าน --- */
 const password="180725";
 const input=document.getElementById('hiddenInput');
 const boxes=document.querySelectorAll('.code-box span');
@@ -261,7 +254,7 @@ input.addEventListener('input',()=>{
     boxes.forEach((b,i)=>b.textContent=v[i]?"●":"");
     if(v.length===6){
         if(v===password) goPage(3);
-        else showPopup("รหัสไม่ถูกนะ นึกดูดีๆ");
+        else showPopup("รหัสไม่ถูกนะ นึกดูดีๆวันสำคัญของเราอะ");
     }
 });
 
@@ -284,18 +277,17 @@ function love(ans){
         const noBtn = document.getElementById('noBtn');
         const gif = document.getElementById('sadGif');
 
-        // ขยายรูปและปุ่ม Yes (จำกัดไม่ให้ใหญ่เกินไปสำหรับ iPhone 11)
+        // ขยายรูปและปุ่ม Yes (ขยายความกว้างรูปเพื่อให้ดันข้อความลง)
         let scaleVal = 1 + (clickCount * 0.15); 
-        if(scaleVal > 1.8) scaleVal = 1.8; 
+        if(scaleVal > 1.7) scaleVal = 1.7; 
 
         yesBtn.style.transform = `scale(${scaleVal})`;
-        gif.style.width = (120 + (clickCount * 20)) + "px"; // ขยายขนาดความกว้างแทน scale เพื่อให้ push เนื้อหาลงไป
+        gif.style.width = (150 + (clickCount * 25)) + "px"; 
 
         // ย่อปุ่ม No
-        let noScale = 1 - (clickCount * 0.2);
-        if(noScale <= 0.2) {
-            noBtn.style.opacity = "0";
-            noBtn.style.pointerEvents = "none";
+        let noScale = 1 - (clickCount * 0.25);
+        if(noScale <= 0.1) {
+            noBtn.style.display = "none";
         } else {
             noBtn.style.transform = `scale(${noScale})`;
         }
@@ -316,7 +308,7 @@ function startTimer() {
 }
 
 function createHeartRain() {
-    for(let i=0; i<25; i++) {
+    for(let i=0; i<30; i++) {
         setTimeout(() => {
             const heart = document.createElement('div');
             heart.classList.add('heart-rain');
@@ -326,7 +318,7 @@ function createHeartRain() {
             heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
             document.body.appendChild(heart);
             setTimeout(() => heart.remove(), 4000);
-        }, i * 200);
+        }, i * 150);
     }
 }
 </script>
