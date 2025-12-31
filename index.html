@@ -44,18 +44,18 @@ body{
     transition:all .6s ease;
     pointer-events:none;
     padding:20px;
+    z-index: 2;
 }
 .section.active{ opacity:1; transform:translateX(0); pointer-events:auto; }
 .section.exit{ opacity:0; transform:translateX(-50px); }
 
-/* --- กล่องเนื้อหาหลัก --- */
 .box{ 
     background:rgba(255, 255, 255, 0.9); 
     padding:25px 20px; 
     border-radius:25px; 
     text-align:center; 
     width:90%; 
-    max-width:340px; /* คุมขนาดกล่องไม่ให้ใหญ่เกินไปใน iPad */
+    max-width:340px;
     display: flex; 
     flex-direction: column; 
     align-items: center; 
@@ -64,62 +64,43 @@ body{
     transition: all 0.4s ease;
 }
 
-/* --- การปรับแต่งสำหรับ iPad/Tablet (หน้าจอที่กว้างกว่า 600px) --- */
 @media (min-width: 600px) {
-    .box {
-        max-width: 450px; /* ขยายกล่องนิดหน่อยให้เหมาะกับจอ iPad */
-        padding: 40px;
-    }
-    h2 { font-size: 28px; }
-    h3 { font-size: 24px; }
+    .box { max-width: 450px; padding: 40px; }
 }
 
-/* --- รูปหน้า 2 --- */
-.img-main {
-    width: 60%;
-    max-width: 250px; /* คุมไม่ให้ใหญ่เกินไปใน iPad */
-    border-radius: 20px;
-    margin-bottom: 15px;
+/* --- มินิเกมจุดพลุ --- */
+#firework-canvas {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
 }
-
-/* --- หน้า 3: หน้าคำถาม --- */
-#sadGif {
-    width: 150px;
-    max-width: 280px; /* ป้องกันรูปใหญ่จนแตกใน iPad */
-    border-radius: 20px;
-    transition: all 0.4s ease;
-    flex-shrink: 0;
-}
-.answer-btns {
-    display: flex;
-    gap: 20px;
-    align-items: center;
-    justify-content: center;
+.game-area {
     width: 100%;
-}
-.icon-btn {
-    width: 65px;
-    height: 65px;
-    border-radius: 50%;
-    border: none;
-    font-size: 28px;
-    color: #fff;
-    cursor: pointer;
-    transition: all 0.4s ease;
+    height: 200px;
+    background: rgba(0,0,0,0.05);
+    border: 2px dashed #4da3ff;
+    border-radius: 20px;
     display: flex;
-    align-items: center;
     justify-content: center;
-    flex-shrink: 0;
+    align-items: center;
+    cursor: crosshair;
+    position: relative;
+    overflow: hidden;
 }
+
+/* --- องค์ประกอบอื่นๆ --- */
+#sadGif { width: 150px; border-radius: 20px; transition: all 0.4s ease; }
+.answer-btns { display: flex; gap: 20px; }
+.icon-btn { width: 65px; height: 65px; border-radius: 50%; border: none; font-size: 28px; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.4s; }
 .yes { background: linear-gradient(135deg, #4CAF50, #81c784); }
 .no { background: linear-gradient(135deg, #F44336, #e57373); }
 
-/* --- รหัสผ่าน --- */
-.code-box{ display:flex; gap:8px; justify-content:center; }
+.code-box{ display:flex; gap:8px; }
 .code-box span{ width:40px; height:50px; border:2px solid #b3d9ff; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:24px; color:#4da3ff; background: #fff; }
 #hiddenInput{ position:absolute; opacity:0; pointer-events: none; }
 
-/* --- หน้า 4-5 --- */
 .final-img { width:70%; max-width:240px; border-radius:25px; opacity:0; transform:scale(0.5); transition:1s ease; }
 .play-anim { opacity: 1 !important; transform: scale(1) !important; }
 
@@ -127,27 +108,13 @@ body{
 .timer-item { background: #f0f7ff; padding: 10px; border-radius: 15px; border: 1px solid #d0e7ff; }
 .timer-num { font-size: 24px; color: #4da3ff; font-weight: bold; }
 
-.popup {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-    pointer-events: none;
-    transition: all 0.4s ease;
-}
-.popup.active { background: rgba(0, 0, 0, 0.5); pointer-events: auto; backdrop-filter: blur(5px); }
-.popup-box { background: #fff; padding: 30px 25px; border-radius: 25px; text-align: center; width: 85%; max-width: 300px; transform: scale(0.5); opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-.popup.active .popup-box { transform: scale(1); opacity: 1; }
-
 .open-btn, .next-btn{ padding:12px 35px; border:none; border-radius:50px; font-size:18px; color:#fff; background:linear-gradient(135deg,#4da3ff,#6fd0ff); cursor:pointer; margin-top: 15px; }
-.heart-rain { position: fixed; top: -10vh; font-size: 20px; z-index: 1; animation: fall linear forwards; }
-@keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
 </style>
 </head>
 
 <body>
+
+<canvas id="firework-canvas"></canvas>
 
 <audio id="bgMusic" loop>
     <source src="music.mp3" type="audio/mpeg">
@@ -159,7 +126,7 @@ body{
 </div>
 
 <div class="section" id="page2">
-    <img src="photo1.png" class="img-main">
+    <img src="photo1.png" style="width:60%; max-width:250px; border-radius:20px; margin-bottom:15px;">
     <div class="box">
         <h3>ใส่ให้ถูกนะเธอลองเดาว่ารหัสอะไร</h3>
         <div class="code-box" onclick="document.getElementById('hiddenInput').focus()">
@@ -183,6 +150,18 @@ body{
 
 <div class="section" id="page4">
     <div class="box">
+        <h2>เย้! ปีใหม่แล้ววว ✨</h2>
+        <p>ช่วยเค้าจุดพลุฉลองหน่อยนะ<br>(จิ้มที่กรอบข้างล่าง 5 ครั้ง)</p>
+        <div class="game-area" onclick="launchFireworkFromClick(event)">
+            <span id="game-hint" style="color:#4da3ff; font-weight:bold;">จิ้มตรงนี้เลย!</span>
+        </div>
+        <div id="fire-count" style="font-size: 18px; color: #4da3ff;">จุดไปแล้ว: 0/5</div>
+        <button id="game-next" class="next-btn" style="display:none;" onclick="goPage(5)">ไปรับของขวัญกัน</button>
+    </div>
+</div>
+
+<div class="section" id="page5">
+    <div class="box">
         <img src="photo2.png" class="final-img" id="finalImg">
         <h3 id="finalText" style="opacity:0; transition:1s ease 0.5s;">
             Happy New year นะคะเธอ<br>
@@ -190,11 +169,11 @@ body{
             เค้าจะตั้งใจรักเธอมากๆ รักที่สุดเลย<br>
             อยู่ด้วยกันนานๆนะ รักมากขึ้นทุกวัน
         </h3>
-        <button class="next-btn" onclick="goPage(5)">ดูเวลาของพวกเรากัน</button>
+        <button class="next-btn" onclick="goPage(6)">ดูเวลาของพวกเรากัน</button>
     </div>
 </div>
 
-<div class="section" id="page5">
+<div class="section" id="page6">
     <div class="box">
         <h2 style="color: #4da3ff; font-size: 22px;">เราคบกันมาแล้ว</h2>
         <img src="S__7938059.jpg" style="width:160px; height:160px; border-radius:50%; object-fit:cover; border:5px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"> 
@@ -204,20 +183,16 @@ body{
             <div class="timer-item"><span id="mins" class="timer-num">0</span><br><small>นาที</small></div>
             <div class="timer-item"><span id="secs" class="timer-num">0</span><br><small>วินาที</small></div>
         </div>
-        <p style="margin-top:10px; color:#888; font-size: 14px;">ตั้งแต่วันที่ 18 กรกฎาคม 2025 | 11:09</p>
-    </div>
-</div>
-
-<div class="popup" id="popup">
-    <div class="popup-box">
-        <h3 id="popupText"></h3>
-        <button class="next-btn" onclick="closePopup()">ลองใหม่</button>
+        <p style="margin-top:10px; color:#888; font-size: 14px;">ตั้งแต่วันที่ 18 กรกฎาคม 2025</p>
     </div>
 </div>
 
 <script>
-const startTime = 200; 
-const endTime = 294;
+let fireCount = 0;
+const canvas = document.getElementById('firework-canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
 function goPage(n){
     const current = document.querySelector('.section.active');
@@ -226,96 +201,107 @@ function goPage(n){
     setTimeout(() => {
         if(current) current.classList.remove('active', 'exit');
         next.classList.add('active');
-        if(n === 4) {
+        if(n === 5) {
             document.getElementById('finalImg').classList.add('play-anim');
             document.getElementById('finalText').style.opacity = "1";
             playMusicWithFade(); 
-            createHeartRain();
         }
-        if(n === 5) startTimer();
+        if(n === 6) startTimer();
     }, 400);
 }
 
 function playMusicWithFade() {
     const audio = document.getElementById('bgMusic');
-    audio.currentTime = startTime; 
+    audio.currentTime = 200; 
     audio.volume = 0.6;
     audio.play();
 }
 
-const password="180725";
+/* --- ระบบรหัสผ่าน --- */
 const input=document.getElementById('hiddenInput');
 const boxes=document.querySelectorAll('.code-box span');
-
 input.addEventListener('input',()=>{
     let v=input.value;
     boxes.forEach((b,i)=>b.textContent=v[i]?"●":"");
     if(v.length===6){
-        if(v===password) goPage(3);
-        else showPopup("รหัสไม่ถูกนะ นึกดูดีๆวันสำคัญของเราอะ");
+        if(v==="180725") goPage(3);
+        else { alert("รหัสไม่ถูกนะ"); input.value=""; boxes.forEach(b=>b.textContent=""); }
     }
 });
 
-function showPopup(text){
-    document.getElementById('popupText').innerText = text;
-    document.getElementById('popup').classList.add('active');
-    input.value = "";
-    boxes.forEach(b => b.textContent = "");
-}
-function closePopup(){ document.getElementById('popup').classList.remove('active'); }
+/* --- มินิเกมจุดพลุ --- */
+function launchFireworkFromClick(e) {
+    document.getElementById('game-hint').style.display = 'none';
+    fireCount++;
+    document.getElementById('fire-count').innerText = `จุดไปแล้ว: ${fireCount}/5`;
+    
+    // สร้างเอฟเฟกต์พลุ
+    createFirework(e.clientX, e.clientY);
 
+    if(fireCount >= 5) {
+        document.getElementById('game-next').style.display = 'block';
+    }
+}
+
+let particles = [];
+function createFirework(x, y) {
+    const color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+    for(let i=0; i<30; i++) {
+        particles.push({
+            x, y,
+            vx: (Math.random() - 0.5) * 8,
+            vy: (Math.random() - 0.5) * 8,
+            alpha: 1,
+            color
+        });
+    }
+}
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach((p, i) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.1;
+        p.alpha -= 0.02;
+        ctx.globalAlpha = p.alpha;
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+        ctx.fill();
+        if(p.alpha <= 0) particles.splice(i, 1);
+    });
+    requestAnimationFrame(animate);
+}
+animate();
+
+/* --- หน้า 3 Logic ขยายปุ่ม --- */
 let clickCount = 0;
 function love(ans){
-    if(ans) {
-        goPage(4);
-    } else {
+    if(ans) goPage(4);
+    else {
         clickCount++;
         const yesBtn = document.getElementById('yesBtn');
-        const noBtn = document.getElementById('noBtn');
         const gif = document.getElementById('sadGif');
-
-        let scaleVal = 1 + (clickCount * 0.15); 
-        if(scaleVal > 1.7) scaleVal = 1.7; 
-
+        const noBtn = document.getElementById('noBtn');
+        let scaleVal = Math.min(1 + (clickCount * 0.15), 1.7); 
         yesBtn.style.transform = `scale(${scaleVal})`;
-        // ปรับการขยายรูปให้สมดุลขึ้น
         gif.style.width = (150 + (clickCount * 20)) + "px"; 
-
-        let noScale = 1 - (clickCount * 0.25);
-        if(noScale <= 0.1) {
-            noBtn.style.display = "none";
-        } else {
-            noBtn.style.transform = `scale(${noScale})`;
-        }
+        if(1 - (clickCount * 0.25) <= 0.1) noBtn.style.display = "none";
+        else noBtn.style.transform = `scale(${1 - (clickCount * 0.25)})`;
     }
 }
 
 function startTimer() {
     const startDate = new Date("2025-07-18T11:09:00").getTime();
     setInterval(() => {
-        const now = new Date().getTime();
-        const diff = now - startDate;
+        const diff = new Date().getTime() - startDate;
         if (diff < 0) return;
         document.getElementById('days').innerText = Math.floor(diff / 86400000);
         document.getElementById('hours').innerText = Math.floor((diff % 86400000) / 3600000);
         document.getElementById('mins').innerText = Math.floor((diff % 3600000) / 60000);
         document.getElementById('secs').innerText = Math.floor((diff % 60000) / 1000);
     }, 1000);
-}
-
-function createHeartRain() {
-    for(let i=0; i<30; i++) {
-        setTimeout(() => {
-            const heart = document.createElement('div');
-            heart.classList.add('heart-rain');
-            heart.innerHTML = '❤';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.color = '#ff4d6d';
-            heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
-            document.body.appendChild(heart);
-            setTimeout(() => heart.remove(), 4000);
-        }, i * 150);
-    }
 }
 </script>
 </body>
