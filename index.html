@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <style>
+/* --- ส่วนที่ 1: การตั้งค่าพื้นฐาน (คงเดิม) --- */
 @font-face{
     font-family:'MyFont';
     src:url('Demordlaimuekean-Regular.ttf') format('truetype');
@@ -22,6 +23,7 @@
 }
 
 body{
+    /* พื้นหลังเดิมของคุณ */
     background:url('Green And Blue Gradient Dreamy Cloud Blank Background Instagram Post.png') center/cover;
     background-color: #a2d2ff;
     overflow:hidden;
@@ -32,6 +34,71 @@ body{
     align-items: center;
 }
 
+/* --- ส่วนที่ 2: CSS สำหรับกล่องของขวัญ (เพิ่มใหม่จากโค้ดล่าง) --- */
+.gift-container {
+    position: relative;
+    width: 160px;
+    height: 160px;
+    cursor: pointer;
+    perspective: 1000px;
+    z-index: 10;
+}
+
+.gift-box {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #ff4d6d; /* สีกล่อง */
+    border-radius: 10px;
+    bottom: 0;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+/* โบว์คาดตัวกล่อง */
+.gift-box::before {
+    content: '';
+    position: absolute;
+    width: 30px; height: 100%;
+    background: #ffb3c1;
+    left: 50%; transform: translateX(-50%);
+}
+
+.gift-lid {
+    position: absolute;
+    width: 110%;
+    height: 40px;
+    background: #ff758f;
+    top: -30px;
+    left: -5%;
+    border-radius: 5px;
+    z-index: 2;
+    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* โบว์บนฝากล่อง */
+.gift-lid::before {
+    content: '🎀';
+    position: absolute;
+    top: -35px; left: 50%;
+    transform: translateX(-50%);
+    font-size: 50px;
+}
+
+/* Animation ตอนเปิดกล่อง */
+.gift-container.open .gift-lid {
+    transform: translateY(-120px) rotate(-15deg);
+    opacity: 0;
+}
+.gift-container.open .gift-box {
+    animation: shake 0.3s ease-in-out infinite alternate;
+}
+
+@keyframes shake {
+    from { transform: rotate(-2deg); }
+    to { transform: rotate(2deg); }
+}
+
+/* --- ส่วนที่ 3: Layout และ Effect เดิม --- */
 .section{
     position:absolute;
     inset:0;
@@ -48,14 +115,13 @@ body{
 .section.active{ opacity:1; transform:translateX(0); pointer-events:auto; }
 .section.exit{ opacity:0; transform:translateX(-50px); }
 
-/* --- กล่องเนื้อหาหลัก --- */
 .box{ 
     background:rgba(255, 255, 255, 0.9); 
     padding:25px 20px; 
     border-radius:25px; 
     text-align:center; 
     width:90%; 
-    max-width:340px; /* คุมขนาดกล่องไม่ให้ใหญ่เกินไปใน iPad */
+    max-width:340px;
     display: flex; 
     flex-direction: column; 
     align-items: center; 
@@ -64,62 +130,24 @@ body{
     transition: all 0.4s ease;
 }
 
-/* --- การปรับแต่งสำหรับ iPad/Tablet (หน้าจอที่กว้างกว่า 600px) --- */
 @media (min-width: 600px) {
-    .box {
-        max-width: 450px; /* ขยายกล่องนิดหน่อยให้เหมาะกับจอ iPad */
-        padding: 40px;
-    }
+    .box { max-width: 450px; padding: 40px; }
     h2 { font-size: 28px; }
     h3 { font-size: 24px; }
 }
 
-/* --- รูปหน้า 2 --- */
-.img-main {
-    width: 60%;
-    max-width: 250px; /* คุมไม่ให้ใหญ่เกินไปใน iPad */
-    border-radius: 20px;
-    margin-bottom: 15px;
-}
+.img-main { width: 60%; max-width: 250px; border-radius: 20px; margin-bottom: 15px; }
 
-/* --- หน้า 3: หน้าคำถาม --- */
-#sadGif {
-    width: 150px;
-    max-width: 280px; /* ป้องกันรูปใหญ่จนแตกใน iPad */
-    border-radius: 20px;
-    transition: all 0.4s ease;
-    flex-shrink: 0;
-}
-.answer-btns {
-    display: flex;
-    gap: 20px;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-}
-.icon-btn {
-    width: 65px;
-    height: 65px;
-    border-radius: 50%;
-    border: none;
-    font-size: 28px;
-    color: #fff;
-    cursor: pointer;
-    transition: all 0.4s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-}
+#sadGif { width: 150px; max-width: 280px; border-radius: 20px; transition: all 0.4s ease; flex-shrink: 0; }
+.answer-btns { display: flex; gap: 20px; align-items: center; justify-content: center; width: 100%; }
+.icon-btn { width: 65px; height: 65px; border-radius: 50%; border: none; font-size: 28px; color: #fff; cursor: pointer; transition: all 0.4s ease; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .yes { background: linear-gradient(135deg, #4CAF50, #81c784); }
 .no { background: linear-gradient(135deg, #F44336, #e57373); }
 
-/* --- รหัสผ่าน --- */
 .code-box{ display:flex; gap:8px; justify-content:center; }
 .code-box span{ width:40px; height:50px; border:2px solid #b3d9ff; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:24px; color:#4da3ff; background: #fff; }
 #hiddenInput{ position:absolute; opacity:0; pointer-events: none; }
 
-/* --- หน้า 4-5 --- */
 .final-img { width:70%; max-width:240px; border-radius:25px; opacity:0; transform:scale(0.5); transition:1s ease; }
 .play-anim { opacity: 1 !important; transform: scale(1) !important; }
 
@@ -127,16 +155,7 @@ body{
 .timer-item { background: #f0f7ff; padding: 10px; border-radius: 15px; border: 1px solid #d0e7ff; }
 .timer-num { font-size: 24px; color: #4da3ff; font-weight: bold; }
 
-.popup {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-    pointer-events: none;
-    transition: all 0.4s ease;
-}
+.popup { position: fixed; inset: 0; display: flex; justify-content: center; align-items: center; z-index: 999; pointer-events: none; transition: all 0.4s ease; }
 .popup.active { background: rgba(0, 0, 0, 0.5); pointer-events: auto; backdrop-filter: blur(5px); }
 .popup-box { background: #fff; padding: 30px 25px; border-radius: 25px; text-align: center; width: 85%; max-width: 300px; transform: scale(0.5); opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 .popup.active .popup-box { transform: scale(1); opacity: 1; }
@@ -154,8 +173,11 @@ body{
 </audio>
 
 <div class="section active" id="page1">
-    <img src="gift.jpg.png" style="width: 80%; max-width: 300px;">
-    <button class="open-btn" onclick="goPage(2)">เปิดสิเธอ</button>
+    <div class="gift-container" id="gift" onclick="openGift()">
+        <div class="gift-lid"></div>
+        <div class="gift-box"></div>
+    </div>
+    <h2 style="margin-top: 50px; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">มีของขวัญมาให้แหละ จิ้มสิ!</h2>
 </div>
 
 <div class="section" id="page2">
@@ -219,6 +241,16 @@ body{
 const startTime = 200; 
 const endTime = 294;
 
+// ฟังก์ชันเปิดกล่องของขวัญ (เพิ่มใหม่)
+function openGift() {
+    const gift = document.getElementById('gift');
+    gift.classList.add('open');
+    // หน่วงเวลา 1 วินาทีให้ Animation เล่น แล้วค่อยเปลี่ยนหน้า
+    setTimeout(() => {
+        goPage(2);
+    }, 1000);
+}
+
 function goPage(n){
     const current = document.querySelector('.section.active');
     const next = document.getElementById('page'+n);
@@ -278,14 +310,13 @@ function love(ans){
         if(scaleVal > 1.7) scaleVal = 1.7; 
 
         yesBtn.style.transform = `scale(${scaleVal})`;
-        // ปรับการขยายรูปให้สมดุลขึ้น
         gif.style.width = (150 + (clickCount * 20)) + "px"; 
 
         let noScale = 1 - (clickCount * 0.25);
         if(noScale <= 0.1) {
             noBtn.style.display = "none";
         } else {
-            noBtn.style.transform = `scale(${noScale})`;
+            noBtn.style.transform = `scale(${noScale})`
         }
     }
 }
