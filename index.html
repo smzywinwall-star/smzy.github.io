@@ -6,139 +6,96 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <style>
-/* --- ส่วนที่ 1: การตั้งค่าพื้นฐาน (คงเดิม) --- */
+/* --- 1. Font & Basic Settings --- */
 @font-face{
     font-family:'MyFont';
     src:url('Demordlaimuekean-Regular.ttf') format('truetype');
-    font-weight:normal;
-    font-style:normal;
+    font-weight:normal; font-style:normal;
 }
 
 *{
     box-sizing:border-box;
     font-family:'MyFont', sans-serif !important;
-    margin:0;
-    padding:0;
+    margin:0; padding:0;
     -webkit-tap-highlight-color: transparent;
 }
 
 body{
-    /* พื้นหลังเดิมของคุณ */
+    /* ใช้พื้นหลังเดียวกันทุกหน้า */
     background:url('Green And Blue Gradient Dreamy Cloud Blank Background Instagram Post.png') center/cover;
-    background-color: #a2d2ff;
+    background-color: #a2d2ff; /* สีสำรอง */
     overflow:hidden;
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    height: 100vh; width: 100vw;
+    display: flex; justify-content: center; align-items: center;
 }
 
-/* --- ส่วนที่ 2: CSS สำหรับกล่องของขวัญ (เพิ่มใหม่จากโค้ดล่าง) --- */
-.gift-container {
-    position: relative;
-    width: 160px;
-    height: 160px;
-    cursor: pointer;
-    perspective: 1000px;
-    z-index: 10;
-}
-
-.gift-box {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #ff4d6d; /* สีกล่อง */
-    border-radius: 10px;
-    bottom: 0;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-}
-
-/* โบว์คาดตัวกล่อง */
-.gift-box::before {
-    content: '';
-    position: absolute;
-    width: 30px; height: 100%;
-    background: #ffb3c1;
-    left: 50%; transform: translateX(-50%);
-}
-
-.gift-lid {
-    position: absolute;
-    width: 110%;
-    height: 40px;
-    background: #ff758f;
-    top: -30px;
-    left: -5%;
-    border-radius: 5px;
-    z-index: 2;
-    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-/* โบว์บนฝากล่อง */
-.gift-lid::before {
-    content: '🎀';
-    position: absolute;
-    top: -35px; left: 50%;
-    transform: translateX(-50%);
-    font-size: 50px;
-}
-
-/* Animation ตอนเปิดกล่อง */
-.gift-container.open .gift-lid {
-    transform: translateY(-120px) rotate(-15deg);
-    opacity: 0;
-}
-.gift-container.open .gift-box {
-    animation: shake 0.3s ease-in-out infinite alternate;
-}
-
-@keyframes shake {
-    from { transform: rotate(-2deg); }
-    to { transform: rotate(2deg); }
-}
-
-/* --- ส่วนที่ 3: Layout และ Effect เดิม --- */
+/* --- 2. Layout Sections --- */
 .section{
-    position:absolute;
-    inset:0;
-    display:flex;
-    flex-direction: column;
-    justify-content:center;
-    align-items:center;
-    opacity:0;
-    transform:translateX(50px);
+    position:absolute; inset:0;
+    display:flex; flex-direction: column;
+    justify-content:center; align-items:center;
+    opacity:0; transform:translateX(50px);
     transition:all .6s ease;
-    pointer-events:none;
-    padding:20px;
+    pointer-events:none; padding:20px;
+    z-index: 2; /* อยู่เหนือ Canvas พลุ */
 }
 .section.active{ opacity:1; transform:translateX(0); pointer-events:auto; }
 .section.exit{ opacity:0; transform:translateX(-50px); }
 
+/* --- 3. The Content Box --- */
 .box{ 
     background:rgba(255, 255, 255, 0.9); 
-    padding:25px 20px; 
-    border-radius:25px; 
-    text-align:center; 
-    width:90%; 
-    max-width:340px;
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    gap: 15px; 
+    padding:25px 20px; border-radius:25px; 
+    text-align:center; width:90%; max-width:340px;
+    display: flex; flex-direction: column; align-items: center; gap: 15px; 
     box-shadow: 0 10px 20px rgba(0,0,0,0.1);
     transition: all 0.4s ease;
 }
 
 @media (min-width: 600px) {
     .box { max-width: 450px; padding: 40px; }
-    h2 { font-size: 28px; }
-    h3 { font-size: 24px; }
+    h2 { font-size: 28px; } h3 { font-size: 24px; }
 }
 
-.img-main { width: 60%; max-width: 250px; border-radius: 20px; margin-bottom: 15px; }
+/* --- 4. Gift Box (Page 1) --- */
+.gift-container {
+    position: relative; width: 160px; height: 160px;
+    cursor: pointer; perspective: 1000px;
+    margin-bottom: 20px;
+}
+.gift-box {
+    position: absolute; width: 100%; height: 100%;
+    background: #ff4d6d; border-radius: 10px; bottom: 0;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+.gift-box::before {
+    content: ''; position: absolute; width: 30px; height: 100%;
+    background: #ffb3c1; left: 50%; transform: translateX(-50%);
+}
+.gift-lid {
+    position: absolute; width: 110%; height: 40px;
+    background: #ff758f; top: -30px; left: -5%;
+    border-radius: 5px; z-index: 2;
+    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.gift-lid::before {
+    content: '🎀'; position: absolute; top: -35px; left: 50%;
+    transform: translateX(-50%); font-size: 50px;
+}
+.gift-container.open .gift-lid { transform: translateY(-120px) rotate(-15deg); opacity: 0; }
+.gift-container.open .gift-box { animation: shake 0.3s ease-in-out infinite alternate; }
+@keyframes shake { from { transform: rotate(-2deg); } to { transform: rotate(2deg); } }
 
+/* --- 5. Firework Canvas --- */
+#firework-canvas {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 1; pointer-events: none; /* ให้คลิกทะลุได้ */
+}
+
+/* --- 6. Other Components --- */
+.img-main { width: 60%; max-width: 250px; border-radius: 20px; margin-bottom: 15px; }
 #sadGif { width: 150px; max-width: 280px; border-radius: 20px; transition: all 0.4s ease; flex-shrink: 0; }
+
 .answer-btns { display: flex; gap: 20px; align-items: center; justify-content: center; width: 100%; }
 .icon-btn { width: 65px; height: 65px; border-radius: 50%; border: none; font-size: 28px; color: #fff; cursor: pointer; transition: all 0.4s ease; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .yes { background: linear-gradient(135deg, #4CAF50, #81c784); }
@@ -161,12 +118,16 @@ body{
 .popup.active .popup-box { transform: scale(1); opacity: 1; }
 
 .open-btn, .next-btn{ padding:12px 35px; border:none; border-radius:50px; font-size:18px; color:#fff; background:linear-gradient(135deg,#4da3ff,#6fd0ff); cursor:pointer; margin-top: 15px; }
-.heart-rain { position: fixed; top: -10vh; font-size: 20px; z-index: 1; animation: fall linear forwards; }
+
+/* หัวใจตก */
+.heart-rain { position: fixed; top: -10vh; font-size: 20px; z-index: 100; animation: fall linear forwards; }
 @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
 </style>
 </head>
 
 <body>
+
+<canvas id="firework-canvas"></canvas>
 
 <audio id="bgMusic" loop>
     <source src="music.mp3" type="audio/mpeg">
@@ -177,7 +138,7 @@ body{
         <div class="gift-lid"></div>
         <div class="gift-box"></div>
     </div>
-    <h2 style="margin-top: 50px; color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">มีของขวัญมาให้แหละ จิ้มสิ!</h2>
+    <h2 style="color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">มีของขวัญมาให้แหละ จิ้มสิ!</h2>
 </div>
 
 <div class="section" id="page2">
@@ -203,7 +164,16 @@ body{
     </div>
 </div>
 
-<div class="section" id="page4">
+<div class="section" id="page4" onclick="triggerFirework(event)">
+    <div class="box" style="pointer-events: none;"> <h2 style="color: #4da3ff;">🎉 ฉลองปีใหม่กัน 🎉</h2>
+        <p>แตะที่หน้าจอเพื่อจุดพลุ<br>ให้ครบ 5 ครั้งนะ!</p>
+        <h1 id="fireworkScore" style="font-size: 40px; color: #ff4d6d;">0/5</h1>
+        <button id="gameNextBtn" class="next-btn" style="display:none; pointer-events: auto;" onclick="goPage(5)">ไปรับคำอวยพร</button>
+    </div>
+    <p style="margin-top: 20px; color: #fff; opacity: 0.8;">(แตะที่ว่างๆ รอบกล่องเพื่อจุดพลุ)</p>
+</div>
+
+<div class="section" id="page5">
     <div class="box">
         <img src="photo2.png" class="final-img" id="finalImg">
         <h3 id="finalText" style="opacity:0; transition:1s ease 0.5s;">
@@ -212,11 +182,11 @@ body{
             เค้าจะตั้งใจรักเธอมากๆ รักที่สุดเลย<br>
             อยู่ด้วยกันนานๆนะ รักมากขึ้นทุกวัน
         </h3>
-        <button class="next-btn" onclick="goPage(5)">ดูเวลาของพวกเรากัน</button>
+        <button class="next-btn" onclick="goPage(6)">ดูเวลาของพวกเรากัน</button>
     </div>
 </div>
 
-<div class="section" id="page5">
+<div class="section" id="page6">
     <div class="box">
         <h2 style="color: #4da3ff; font-size: 22px;">เราคบกันมาแล้ว</h2>
         <img src="S__7938059.jpg" style="width:160px; height:160px; border-radius:50%; object-fit:cover; border:5px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"> 
@@ -238,19 +208,11 @@ body{
 </div>
 
 <script>
+// --- Config ---
 const startTime = 200; 
-const endTime = 294;
+const password = "180725";
 
-// ฟังก์ชันเปิดกล่องของขวัญ (เพิ่มใหม่)
-function openGift() {
-    const gift = document.getElementById('gift');
-    gift.classList.add('open');
-    // หน่วงเวลา 1 วินาทีให้ Animation เล่น แล้วค่อยเปลี่ยนหน้า
-    setTimeout(() => {
-        goPage(2);
-    }, 1000);
-}
-
+// --- Navigation ---
 function goPage(n){
     const current = document.querySelector('.section.active');
     const next = document.getElementById('page'+n);
@@ -258,27 +220,29 @@ function goPage(n){
     setTimeout(() => {
         if(current) current.classList.remove('active', 'exit');
         next.classList.add('active');
-        if(n === 4) {
+        
+        // ถ้าเข้าหน้า 5 (อวยพร) ให้เล่นเพลง
+        if(n === 5) {
             document.getElementById('finalImg').classList.add('play-anim');
             document.getElementById('finalText').style.opacity = "1";
             playMusicWithFade(); 
             createHeartRain();
         }
-        if(n === 5) startTimer();
+        // ถ้าเข้าหน้า 6 (จับเวลา) ให้เริ่มนับ
+        if(n === 6) startTimer();
     }, 400);
 }
 
-function playMusicWithFade() {
-    const audio = document.getElementById('bgMusic');
-    audio.currentTime = startTime; 
-    audio.volume = 0.6;
-    audio.play();
+// --- Page 1: Gift Box ---
+function openGift() {
+    const gift = document.getElementById('gift');
+    gift.classList.add('open');
+    setTimeout(() => { goPage(2); }, 1000);
 }
 
-const password="180725";
+// --- Page 2: Password ---
 const input=document.getElementById('hiddenInput');
 const boxes=document.querySelectorAll('.code-box span');
-
 input.addEventListener('input',()=>{
     let v=input.value;
     boxes.forEach((b,i)=>b.textContent=v[i]?"●":"");
@@ -291,47 +255,99 @@ input.addEventListener('input',()=>{
 function showPopup(text){
     document.getElementById('popupText').innerText = text;
     document.getElementById('popup').classList.add('active');
-    input.value = "";
-    boxes.forEach(b => b.textContent = "");
+    input.value = ""; boxes.forEach(b => b.textContent = "");
 }
 function closePopup(){ document.getElementById('popup').classList.remove('active'); }
 
+// --- Page 3: Love Question ---
 let clickCount = 0;
 function love(ans){
     if(ans) {
-        goPage(4);
+        goPage(4); // ไปหน้าเกมพลุ
     } else {
         clickCount++;
         const yesBtn = document.getElementById('yesBtn');
         const noBtn = document.getElementById('noBtn');
         const gif = document.getElementById('sadGif');
-
-        let scaleVal = 1 + (clickCount * 0.15); 
-        if(scaleVal > 1.7) scaleVal = 1.7; 
-
+        let scaleVal = Math.min(1 + (clickCount * 0.15), 1.7); 
         yesBtn.style.transform = `scale(${scaleVal})`;
         gif.style.width = (150 + (clickCount * 20)) + "px"; 
-
         let noScale = 1 - (clickCount * 0.25);
-        if(noScale <= 0.1) {
-            noBtn.style.display = "none";
-        } else {
-            noBtn.style.transform = `scale(${noScale})`
+        if(noScale <= 0.1) noBtn.style.display = "none";
+        else noBtn.style.transform = `scale(${noScale})`;
+    }
+}
+
+// --- Page 4: Firework Game Logic ---
+let fireScore = 0;
+const canvas = document.getElementById('firework-canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+
+function triggerFirework(e) {
+    // เช็คว่าอยู่หน้า 4 หรือไม่
+    const page4 = document.getElementById('page4');
+    if (!page4.classList.contains('active')) return;
+
+    // สร้างพลุ ณ จุดที่คลิก
+    createParticles(e.clientX, e.clientY);
+    
+    // นับคะแนน (สูงสุด 5)
+    if(fireScore < 5) {
+        fireScore++;
+        document.getElementById('fireworkScore').innerText = fireScore + "/5";
+        if(fireScore === 5) {
+            document.getElementById('gameNextBtn').style.display = "inline-block";
+            document.getElementById('fireworkScore').style.color = "#4CAF50";
         }
     }
 }
 
-function startTimer() {
-    const startDate = new Date("2025-07-18T11:09:00").getTime();
-    setInterval(() => {
-        const now = new Date().getTime();
-        const diff = now - startDate;
-        if (diff < 0) return;
-        document.getElementById('days').innerText = Math.floor(diff / 86400000);
-        document.getElementById('hours').innerText = Math.floor((diff % 86400000) / 3600000);
-        document.getElementById('mins').innerText = Math.floor((diff % 3600000) / 60000);
-        document.getElementById('secs').innerText = Math.floor((diff % 60000) / 1000);
-    }, 1000);
+class Particle {
+    constructor(x, y, color) {
+        this.x = x; this.y = y; this.color = color;
+        this.radius = Math.random() * 2 + 1;
+        this.velocity = { x: (Math.random() - 0.5) * 8, y: (Math.random() - 0.5) * 8 };
+        this.alpha = 1; this.friction = 0.96; this.gravity = 0.05;
+    }
+    draw() {
+        ctx.save(); ctx.globalAlpha = this.alpha; ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = this.color; ctx.fill(); ctx.restore();
+    }
+    update() {
+        this.velocity.x *= this.friction; this.velocity.y *= this.friction;
+        this.velocity.y += this.gravity; this.x += this.velocity.x; this.y += this.velocity.y;
+        this.alpha -= 0.01;
+    }
+}
+
+function createParticles(x, y) {
+    const hue = Math.random() * 360;
+    for (let i = 0; i < 40; i++) {
+        particles.push(new Particle(x, y, `hsl(${hue}, 100%, 60%)`));
+    }
+}
+
+function animate() {
+    requestAnimationFrame(animate);
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
+    particles.forEach((p, i) => {
+        if (p.alpha > 0) { p.update(); p.draw(); }
+        else particles.splice(i, 1);
+    });
+}
+animate();
+
+// --- Page 5: Music & Effect ---
+function playMusicWithFade() {
+    const audio = document.getElementById('bgMusic');
+    audio.currentTime = startTime; 
+    audio.volume = 0.6;
+    audio.play();
 }
 
 function createHeartRain() {
@@ -348,6 +364,26 @@ function createHeartRain() {
         }, i * 150);
     }
 }
+
+// --- Page 6: Timer ---
+function startTimer() {
+    const startDate = new Date("2025-07-18T11:09:00").getTime();
+    setInterval(() => {
+        const now = new Date().getTime();
+        const diff = now - startDate;
+        if (diff < 0) return;
+        document.getElementById('days').innerText = Math.floor(diff / 86400000);
+        document.getElementById('hours').innerText = Math.floor((diff % 86400000) / 3600000);
+        document.getElementById('mins').innerText = Math.floor((diff % 3600000) / 60000);
+        document.getElementById('secs').innerText = Math.floor((diff % 60000) / 1000);
+    }, 1000);
+}
+
+// Resize Canvas on window resize
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
 </script>
 </body>
 </html>
