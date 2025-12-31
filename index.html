@@ -4,156 +4,109 @@
 <meta charset="UTF-8">
 <title>For My Love 💙</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-/* ตั้งค่าพื้นฐาน */
+@font-face{
+    font-family:'MyFont';
+    src:url('Demordlaimuekean-Regular.ttf') format('truetype');
+    font-weight:normal;
+    font-style:normal;
+}
+
 *{
     box-sizing:border-box;
-    font-family: 'Prompt', sans-serif; /* ใช้ฟอนต์ Prompt */
-    margin:0; padding:0;
+    font-family:'MyFont', sans-serif !important;
+    margin:0;
+    padding:0;
     -webkit-tap-highlight-color: transparent;
 }
 
 body{
-    /* 1. สีพื้นหลังสำรอง (ถ้าโหลดรูปไม่ได้จะเป็นสีเทาเข้ม) */
-    background-color: #333; 
-    /* 2. ตรงนี้คือจุดที่ดึงรูปของคุณมาใช้ ชื่อไฟล์ background.jpg */
-    background-image: url('background.jpg'); 
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    
-    overflow:hidden; height: 100vh; width: 100vw;
-    display: flex; justify-content: center; align-items: center;
-    position: relative;
+    background: #a2d2ff url('Green And Blue Gradient Dreamy Cloud Blank Background Instagram Post.png') center/cover;
+    overflow:hidden;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* เพิ่มเลเยอร์สีดำจางๆ เพื่อให้ตัวหนังสืออ่านง่ายขึ้นบนรูปของคุณ */
-body::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.4); /* ปรับความมืดตรงเลข 0.4 (0.1-0.9) */
-    z-index: -1;
+/* Canvas ให้เต็มจอและอยู่หลังเนื้อหาเล็กน้อย */
+#firework-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 10; /* ให้อยู่เหนือพื้นหลังแต่ใต้ปุ่ม */
 }
 
-/* --- กล่องของขวัญ 3D --- */
-.gift-container {
-    position: relative;
-    width: 160px;
-    height: 160px;
-    cursor: pointer;
-    perspective: 1000px;
-    z-index: 5;
-}
-
-.gift-box {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: #ff4d6d;
-    border-radius: 10px;
-    bottom: 0;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-}
-
-.gift-box::before {
-    content: '';
-    position: absolute;
-    width: 30px; height: 100%;
-    background: #ffb3c1;
-    left: 50%; transform: translateX(-50%);
-}
-
-.gift-lid {
-    position: absolute;
-    width: 110%;
-    height: 40px;
-    background: #ff758f;
-    top: -30px;
-    left: -5%;
-    border-radius: 5px;
-    z-index: 2;
-    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-
-.gift-lid::before {
-    content: '🎀';
-    position: absolute;
-    top: -35px; left: 50%;
-    transform: translateX(-50%);
-    font-size: 50px;
-}
-
-.gift-container.open .gift-lid {
-    transform: translateY(-120px) rotate(-15deg);
-    opacity: 0;
-}
-.gift-container.open .gift-box {
-    animation: shake 0.3s ease-in-out infinite alternate;
-}
-
-@keyframes shake {
-    from { transform: rotate(-2deg); }
-    to { transform: rotate(2deg); }
-}
-
-/* --- โครงสร้างหน้าเว็บ --- */
 .section{
-    position:absolute; inset:0;
-    display:flex; flex-direction: column;
-    justify-content:center; align-items:center;
-    opacity:0; transform:scale(0.8);
-    transition:all 0.6s ease;
-    pointer-events:none; padding:20px;
-    z-index: 1; /* อยู่เหนือพื้นหลัง */
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items:center;
+    opacity:0;
+    transform:translateX(50px);
+    transition:all .6s ease;
+    pointer-events:none;
+    padding:20px;
+    z-index: 20;
 }
-.section.active{ opacity:1; transform:scale(1); pointer-events:auto; }
+.section.active{ opacity:1; transform:translateX(0); pointer-events:auto; }
+.section.exit{ opacity:0; transform:translateX(-50px); }
 
 .box{ 
-    background:rgba(255, 255, 255, 0.85); /* พื้นหลังกล่องข้อความสีขาวจางๆ */
-    padding:25px 20px; border-radius:25px; 
-    text-align:center; width:90%; max-width:340px;
-    display: flex; flex-direction: column; align-items: center; gap: 15px; 
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2); 
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255,255,255,0.5);
+    background:rgba(255, 255, 255, 0.9); 
+    padding:25px 20px; 
+    border-radius:25px; 
+    text-align:center; 
+    width:90%; 
+    max-width:340px;
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    gap: 15px; 
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    transition: all 0.4s ease;
+    backdrop-filter: blur(5px);
 }
 
-/* --- ระบบพลุ --- */
-#firework-canvas {
-    position: fixed; top: 0; left: 0;
-    width: 100%; height: 100%;
-    pointer-events: none; z-index: 10;
+@media (min-width: 600px) { .box { max-width: 450px; padding: 40px; } }
+
+/* หน้ามินิเกม */
+.game-area {
+    width: 100%;
+    height: 200px;
+    background: rgba(255,255,255,0.4);
+    border: 3px dashed #4da3ff;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
 }
 
-/* --- หน้าใส่รหัส --- */
-.code-box{ display:flex; gap:8px; margin-top:10px; }
+#sadGif { width: 150px; border-radius: 20px; transition: all 0.4s ease; }
+.icon-btn { width: 65px; height: 65px; border-radius: 50%; border: none; font-size: 28px; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.4s; }
+.yes { background: linear-gradient(135deg, #4CAF50, #81c784); }
+.no { background: linear-gradient(135deg, #F44336, #e57373); }
+
+.code-box{ display:flex; gap:8px; }
 .code-box span{ width:40px; height:50px; border:2px solid #b3d9ff; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:24px; color:#4da3ff; background: #fff; }
 #hiddenInput{ position:absolute; opacity:0; pointer-events: none; }
 
-/* --- หน้ามินิเกม --- */
-.game-area { width: 100%; height: 200px; background: rgba(255,255,255,0.4); border: 3px dashed #4da3ff; border-radius: 20px; display: flex; justify-content: center; align-items: center; cursor: pointer; position: relative; }
-
-/* --- ปุ่มและอื่นๆ --- */
-.open-btn, .next-btn{ padding:12px 35px; border:none; border-radius:50px; font-size:16px; color:#fff; background:linear-gradient(135deg,#4da3ff,#6fd0ff); cursor:pointer; margin-top: 15px; font-weight: 600; box-shadow: 0 4px 10px rgba(77, 163, 255, 0.4); }
-.icon-btn { width: 65px; height: 65px; border-radius: 50%; border: none; font-size: 28px; color: #fff; display: flex; align-items: center; justify-content: center; transition: 0.4s; cursor: pointer; }
-.yes { background: #4CAF50; box-shadow: 0 4px 10px rgba(76, 175, 80, 0.4); } 
-.no { background: #F44336; box-shadow: 0 4px 10px rgba(244, 67, 54, 0.4); }
+.final-img { width:70%; max-width:240px; border-radius:25px; opacity:0; transform:scale(0.5); transition:1s ease; }
+.play-anim { opacity: 1 !important; transform: scale(1) !important; }
 
 .timer-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; }
 .timer-item { background: #f0f7ff; padding: 10px; border-radius: 15px; border: 1px solid #d0e7ff; }
 .timer-num { font-size: 24px; color: #4da3ff; font-weight: bold; }
 
-.final-img { width:70%; max-width:240px; border-radius:25px; opacity:0; transform:scale(0.5); transition:1s ease; }
-.play-anim { opacity: 1 !important; transform: scale(1) !important; }
-
-h2, h3 { color: #333; }
-p { color: #555; }
-/* ข้อความหน้าแรกให้เป็นสีขาว */
-#page1 h2 { color: #fff; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+.open-btn, .next-btn{ padding:12px 35px; border:none; border-radius:50px; font-size:18px; color:#fff; background:linear-gradient(135deg,#4da3ff,#6fd0ff); cursor:pointer; margin-top: 15px; box-shadow: 0 4px 10px rgba(77, 163, 255, 0.3); }
 </style>
 </head>
 
@@ -166,15 +119,12 @@ p { color: #555; }
 </audio>
 
 <div class="section active" id="page1">
-    <div class="gift-container" id="gift" onclick="openGift()">
-        <div class="gift-lid"></div>
-        <div class="gift-box"></div>
-    </div>
-    <h2 style="margin-top: 50px;">มีของขวัญมาให้แหละ จิ้มสิ!</h2>
+    <img src="gift.jpg.png" style="width: 80%; max-width: 300px;">
+    <button class="open-btn" onclick="goPage(2)">เปิดสิเธอ</button>
 </div>
 
 <div class="section" id="page2">
-    <img src="photo1.png" style="width:60%; max-width:250px; border-radius:20px; margin-bottom:15px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+    <img src="photo1.png" style="width:60%; max-width:250px; border-radius:20px; margin-bottom:15px;">
     <div class="box">
         <h3>ใส่ให้ถูกนะเธอลองเดาว่ารหัสอะไร</h3>
         <div class="code-box" onclick="document.getElementById('hiddenInput').focus()">
@@ -187,9 +137,9 @@ p { color: #555; }
 
 <div class="section" id="page3">
     <div class="box">
-        <img id="sadGif" src="Sad Dog GIF.gif" style="width:150px; border-radius:20px;">
+        <img id="sadGif" src="Sad Dog GIF.gif">
         <h2 id="questionText">เค้ารักเธอมากๆเลยนะ<br>เธอรักเหมือนที่เค้ารักมั้ย</h2>
-        <div class="answer-btns" style="display:flex; gap:20px;">
+        <div class="answer-btns">
             <button id="yesBtn" class="icon-btn yes" onclick="love(true)">✔</button>
             <button id="noBtn" class="icon-btn no" onclick="love(false)">✖</button>
         </div>
@@ -199,9 +149,9 @@ p { color: #555; }
 <div class="section" id="page4">
     <div class="box">
         <h2>🎉 Happy New Year! 🎉</h2>
-        <p>ช่วยกันจุดพลุฉลองปีใหม่หน่อยนะ!<br>(จิ้มตรงกรอบ 5 ครั้ง)</p>
+        <p>ช่วยกันจุดพลุฉลองปีใหม่หน่อยนะ!<br>(จิ้มตรงกรอบข้างล่าง 5 ครั้ง)</p>
         <div class="game-area" id="trigger-area">
-            <span id="game-hint" style="color:#4da3ff; font-weight:bold;">จิ้มตรงนี้รัวๆ!</span>
+            <span id="game-hint" style="color:#4da3ff; font-weight:bold; animation: pulse 1.5s infinite;">จิ้มตรงนี้รัวๆ!</span>
         </div>
         <div id="fire-count" style="font-size: 18px; color: #4da3ff; font-weight:bold;">พลุที่จุด: 0/5</div>
         <button id="game-next" class="next-btn" style="display:none;" onclick="goPage(5)">ไปรับของขวัญกัน</button>
@@ -224,48 +174,21 @@ p { color: #555; }
 <div class="section" id="page6">
     <div class="box">
         <h2 style="color: #4da3ff; font-size: 22px;">เราคบกันมาแล้ว</h2>
-        <img src="S__7938059.jpg" style="width:160px; height:160px; border-radius:50%; object-fit:cover; border:5px solid #fff; box-shadow: 0 5px 15px rgba(0,0,0,0.1);"> 
+        <img src="S__7938059.jpg" style="width:160px; height:160px; border-radius:50%; object-fit:cover; border:5px solid #fff;"> 
         <div class="timer-grid">
             <div class="timer-item"><span id="days" class="timer-num">0</span><br><small>วัน</small></div>
-            <div class="timer-item"><span id="hours" class="timer-num">0</span><br><small>ชม.</small></div>
+            <div class="timer-item"><span id="hours" class="timer-num">0</span><br><small>ชั่วโมง</small></div>
             <div class="timer-item"><span id="mins" class="timer-num">0</span><br><small>นาที</small></div>
-            <div class="timer-item"><span id="secs" class="timer-num">0</span><br><small>วิ</small></div>
+            <div class="timer-item"><span id="secs" class="timer-num">0</span><br><small>วินาที</small></div>
         </div>
         <p style="margin-top:10px; color:#888; font-size: 14px;">ตั้งแต่วันที่ 18 กรกฎาคม 2025</p>
     </div>
 </div>
 
 <script>
-// --- ฟังก์ชันเปิดกล่อง ---
-function openGift() {
-    const gift = document.getElementById('gift');
-    gift.classList.add('open');
-    setTimeout(() => {
-        goPage(2);
-    }, 1200);
-}
-
-function goPage(n){
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.getElementById('page'+n).classList.add('active');
-    
-    // หน้า 5: เล่นเพลงและแสดงข้อความ
-    if(n === 5) {
-        document.getElementById('finalImg').classList.add('play-anim');
-        document.getElementById('finalText').style.opacity = "1";
-        const music = document.getElementById('bgMusic');
-        music.volume = 0.5;
-        music.play().catch(e => console.log("ต้องแตะหน้าจอก่อนเพลงถึงจะเล่น"));
-    }
-    // หน้า 6: เริ่มนับเวลา
-    if(n === 6) startTimer();
-}
-
-// --- มินิเกมจุดพลุ ---
+let fireCount = 0;
 const canvas = document.getElementById('firework-canvas');
 const ctx = canvas.getContext('2d');
-let particles = [];
-let fireCount = 0;
 
 function resizeCanvas() {
     canvas.width = window.innerWidth;
@@ -274,103 +197,152 @@ function resizeCanvas() {
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
+function goPage(n){
+    const current = document.querySelector('.section.active');
+    const next = document.getElementById('page'+n);
+    if(current) current.classList.add('exit');
+    setTimeout(() => {
+        if(current) current.classList.remove('active', 'exit');
+        next.classList.add('active');
+        if(n === 5) {
+            document.getElementById('finalImg').classList.add('play-anim');
+            document.getElementById('finalText').style.opacity = "1";
+            playMusicWithFade(); 
+        }
+        if(n === 6) startTimer();
+    }, 400);
+}
+
+function playMusicWithFade() {
+    const audio = document.getElementById('bgMusic');
+    audio.currentTime = 200; 
+    audio.volume = 0.6;
+    audio.play();
+}
+
+const input=document.getElementById('hiddenInput');
+const boxes=document.querySelectorAll('.code-box span');
+input.addEventListener('input',()=>{
+    let v=input.value;
+    boxes.forEach((b,i)=>b.textContent=v[i]?"●":"");
+    if(v.length===6){
+        if(v==="180725") goPage(3);
+        else { alert("รหัสไม่ถูกนะ นึกดูดีๆ"); input.value=""; boxes.forEach(b=>b.textContent=""); }
+    }
+});
+
+/* --- ระบบพลุอัปเกรด (High Quality) --- */
+let particles = [];
+
 class Particle {
     constructor(x, y, color) {
-        this.x = x; this.y = y; this.color = color;
+        this.x = x;
+        this.y = y;
+        this.color = color;
         this.radius = Math.random() * 2 + 1;
-        this.velocity = { x: (Math.random() - 0.5) * 12, y: (Math.random() - 0.5) * 12 };
+        this.velocity = {
+            x: (Math.random() - 0.5) * 12,
+            y: (Math.random() - 0.5) * 12
+        };
         this.alpha = 1;
-        this.friction = 0.95; this.gravity = 0.15;
+        this.friction = 0.95;
+        this.gravity = 0.15;
     }
+
     draw() {
-        ctx.save(); ctx.globalAlpha = this.alpha; ctx.beginPath();
+        ctx.save();
+        ctx.globalAlpha = this.alpha;
+        ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = this.color; ctx.fill(); ctx.restore();
+        ctx.fillStyle = this.color;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = this.color;
+        ctx.fill();
+        ctx.restore();
     }
+
     update() {
-        this.velocity.x *= this.friction; this.velocity.y *= this.friction;
-        this.velocity.y += this.gravity; this.x += this.velocity.x; this.y += this.velocity.y;
+        this.velocity.x *= this.friction;
+        this.velocity.y *= this.friction;
+        this.velocity.y += this.gravity;
+        this.x += this.velocity.x;
+        this.y += this.velocity.y;
         this.alpha -= 0.015;
     }
 }
 
 function createFirework(x, y) {
+    const particleCount = 60;
     const hue = Math.random() * 360;
-    for (let i = 0; i < 40; i++) particles.push(new Particle(x, y, `hsl(${hue}, 100%, 60%)`));
+    const color = `hsl(${hue}, 100%, 60%)`;
+    for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle(x, y, color));
+    }
 }
 
 function animate() {
     requestAnimationFrame(animate);
-    ctx.clearRect(0, 0, canvas.width, canvas.height); // เคลียร์ Canvas เพื่อโชว์พื้นหลัง
-    particles.forEach((p, i) => {
-        if (p.alpha > 0) { p.update(); p.draw(); }
-        else particles.splice(i, 1);
+    // สร้าง Effect หางจางๆ (Trail)
+    ctx.fillStyle = 'rgba(162, 210, 255, 0.2)'; // ล้อกับสีพื้นหลัง
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    particles.forEach((particle, index) => {
+        if (particle.alpha > 0) {
+            particle.update();
+            particle.draw();
+        } else {
+            particles.splice(index, 1);
+        }
     });
 }
 animate();
 
+// เมื่อจิ้มที่เขตพื้นที่เกม
 document.getElementById('trigger-area').addEventListener('click', (e) => {
-    // คำนวณตำแหน่งจุดพลุให้อยู่ตรงกลางๆ จอ หรือตามตำแหน่งเมาส์
-    const rect = e.target.getBoundingClientRect();
-    const x = e.clientX;
-    const y = e.clientY;
-    
+    document.getElementById('game-hint').style.display = 'none';
     fireCount++;
     document.getElementById('fire-count').innerText = `พลุที่จุด: ${fireCount}/5`;
-    createFirework(x, y);
     
-    // สร้างพลุเพิ่มอีกหน่อยเพื่อให้ดูอลังการ
-    setTimeout(() => createFirework(x + (Math.random()*100-50), y + (Math.random()*100-50)), 100);
+    // ยิงพลุจากจุดที่จิ้ม
+    createFirework(e.clientX, e.clientY);
 
     if(fireCount >= 5) {
         document.getElementById('game-next').style.display = 'block';
-        document.getElementById('game-hint').innerText = "เก่งมาก! ไปต่อเลย";
     }
 });
 
-// --- รหัสผ่าน ---
-const input = document.getElementById('hiddenInput');
-const boxes = document.querySelectorAll('.code-box span');
-input.addEventListener('input', () => {
-    let v = input.value;
-    boxes.forEach((b, i) => b.textContent = v[i] ? "●" : "");
-    // แก้รหัสผ่านตรงนี้: 180725
-    if(v.length === 6 && v === "180725") goPage(3);
-});
-
-// --- รักมั้ย ---
-let loveClick = 0;
+/* --- ระบบหน้า 3 ขยายปุ่ม --- */
+let clickCount = 0;
 function love(ans){
     if(ans) goPage(4);
     else {
-        loveClick++;
-        const yes = document.getElementById('yesBtn');
+        clickCount++;
+        const yesBtn = document.getElementById('yesBtn');
         const gif = document.getElementById('sadGif');
-        // ขยายปุ่ม Yes
-        yes.style.transform = `scale(${Math.min(1+(loveClick*0.2), 1.7)})`;
-        // ขยายรูปหมา
-        gif.style.width = (150 + (loveClick*20)) + "px";
-        
-        if(loveClick > 3) document.getElementById('noBtn').style.display='none';
+        const noBtn = document.getElementById('noBtn');
+        let scaleVal = Math.min(1 + (clickCount * 0.15), 1.7); 
+        yesBtn.style.transform = `scale(${scaleVal})`;
+        gif.style.width = (150 + (clickCount * 20)) + "px"; 
+        if(1 - (clickCount * 0.25) <= 0.1) noBtn.style.display = "none";
+        else noBtn.style.transform = `scale(${1 - (clickCount * 0.25)})`;
     }
 }
 
-// --- ตัวนับเวลา ---
 function startTimer() {
-    // แก้ไขวันเริ่มคบตรงนี้: ปี-เดือน-วันTเวลา
-    const start = new Date("2025-07-18T11:09:00").getTime();
-    
+    const startDate = new Date("2025-07-18T11:09:00").getTime();
     setInterval(() => {
-        const now = new Date().getTime();
-        // ใช้ Math.abs เผื่อวันที่ยังมาไม่ถึงหรือเป็นอดีตจะได้ไม่ติดลบ
-        const diff = Math.abs(now - start);
-        
-        document.getElementById('days').innerText = Math.floor(diff/86400000);
-        document.getElementById('hours').innerText = Math.floor((diff%86400000)/3600000);
-        document.getElementById('mins').innerText = Math.floor((diff%3600000)/60000);
-        document.getElementById('secs').innerText = Math.floor((diff%60000)/1000);
+        const diff = new Date().getTime() - startDate;
+        if (diff < 0) return;
+        document.getElementById('days').innerText = Math.floor(diff / 86400000);
+        document.getElementById('hours').innerText = Math.floor((diff % 86400000) / 3600000);
+        document.getElementById('mins').innerText = Math.floor((diff % 3600000) / 60000);
+        document.getElementById('secs').innerText = Math.floor((diff % 60000) / 1000);
     }, 1000);
 }
-</script>
+
+@keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+</style>
+</head>
+<body>
 </body>
 </html>
